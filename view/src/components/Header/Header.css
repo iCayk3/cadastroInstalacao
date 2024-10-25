@@ -1,0 +1,6 @@
+.header {
+    display: flex   ;
+    height: 75px;
+    background-color: cornflowerblue;
+    width: 100%;
+}

@@ -1,0 +1,27 @@
+.table-container {
+    margin-top: 30px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
+  
+.table-container  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+.table-container  table, th, td {
+    border: 1px solid #ddd;
+  }
+  
+.table-container th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  
+.table-container  th {
+    background-color: #f2f2f2;
+  }
+  

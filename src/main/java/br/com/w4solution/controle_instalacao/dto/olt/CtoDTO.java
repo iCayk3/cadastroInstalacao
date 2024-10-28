@@ -6,8 +6,8 @@ import br.com.w4solution.controle_instalacao.domain.olt.Porta;
 
 import java.util.List;
 
-public record CtoDTO(Long id, String nomeCto, List<Porta> portas, Olt olt) {
+public record CtoDTO(Long id, String nomeCto, Integer portas) {
     public CtoDTO(Cto cto){
-        this(cto.getId(), cto.getNomeCto(), cto.getPortas(), cto.getOlt());
+        this(cto.getId(), cto.getNomeCto(), cto.getPortas().size());
     }
 }

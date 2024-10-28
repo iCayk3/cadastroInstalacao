@@ -8,12 +8,10 @@ import br.com.w4solution.controle_instalacao.dto.olt.*;
 import br.com.w4solution.controle_instalacao.repository.olt.CtoRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.OltRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.PortaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.beans.Transient;
@@ -32,6 +30,32 @@ public class OltController {
 
     @Autowired
     PortaRepository repositoryPorta;
+
+    @GetMapping
+    public ResponseEntity<List<OltDTO>> listarOlts(){
+        var olts = repository.findAll().stream().map(OltDTO::new).toList();
+        return ResponseEntity.ok(olts);
+    }
+
+    @GetMapping("/cto")
+    public ResponseEntity<List<CtoDTO>> listarCtos(@RequestBody OltDTO dados){
+        var olt = repository.findById(dados.id());
+        if(olt.isPresent()){
+            var ctos = olt.get().getCto().stream().map(CtoDTO::new).toList();
+            return ResponseEntity.ok(ctos);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/cto/portas")
+    public ResponseEntity<List<PortaDTO>> listarPortas(@RequestBody CtoDTO dados){
+        var cto = repositoryCto.findById(dados.id());
+        if(cto.isPresent()){
+            var portas = cto.get().getPortas().stream().map(PortaDTO::new).toList();
+            return ResponseEntity.ok(portas);
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     @PostMapping
     @Transient
@@ -69,28 +93,23 @@ public class OltController {
 
     }
 
-    @PostMapping("/cto/cliente")
-    @Transient
-    public ResponseEntity<CtoDTO> cadastrarClienteNaCto(@RequestBody PortaDTO dados){
-        var oltEncontrada = repository.findById(dados.oltId());
-        if(oltEncontrada.isEmpty()){
-            return ResponseEntity.notFound().build();
+    @PutMapping("/cto/portas")
+    @Transactional
+    public ResponseEntity<PortaDTO> atualizarPorta(@RequestBody AtualizarPortaDTO dados){
+        Cliente cliente = new Cliente();
+        cliente.setCodigo(dados.codigoCliente());
+        System.out.println(cliente);
+        var porta = repositoryPorta.findById(dados.portaId());
+        if(porta.isPresent()){
+
+            porta.get().setClientes(cliente);
+
+            System.out.println(porta.get());
+            return ResponseEntity.ok(new PortaDTO(porta.get()));
         }
 
-        var cliente = new Cliente(dados.codigoCLiente());
-
-        var olt = oltEncontrada.get();
-
-        Cto ctoEncontrada = olt.getCto().get(dados.numeroCto());
-
-        var porta = ctoEncontrada.getPortas().get(dados.numeroPorta() + 1);
-        System.out.println(porta);
-        porta.setCliente(cliente);
-
-        repositoryPorta.save(porta);
-
-        System.out.println(ctoEncontrada);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
     }
+
 
 }

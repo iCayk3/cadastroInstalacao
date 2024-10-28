@@ -24,7 +24,6 @@ public class Cto {
     private Olt olt;
 
 
-
     @Override
     public String toString() {
         return "nomeCto='" + nomeCto;

@@ -4,8 +4,6 @@ import br.com.w4solution.controle_instalacao.domain.cliente.Cliente;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "portas")
 @AllArgsConstructor
@@ -18,8 +16,11 @@ public class Porta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer porta;
-    @Embedded
-    private Cliente cliente;
+
+    @OneToOne(mappedBy = "portaCliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "portaCliente")
+    private Cliente clientes;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cto cto;
 
@@ -30,6 +31,6 @@ public class Porta {
 
     @Override
     public String toString() {
-        return "porta: " + porta;
+        return "porta: " + porta + " cliente: " + clientes;
     }
 }

@@ -3,13 +3,11 @@ package br.com.w4solution.controle_instalacao.domain.cliente;
 
 import br.com.w4solution.controle_instalacao.domain.olt.Porta;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 @Entity
@@ -19,13 +17,23 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer codigo;
+    private String nome;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "porta_id", referencedColumnName = "id")
     private Porta portaCliente;
+
+    public void atualizarCliente(String nome, Porta porta){
+        if(nome != null){
+            this.nome = nome;
+        }
+        if(porta != null){
+            this.portaCliente = porta;
+        }
+    }
 
     @Override
     public String toString() {
-        return "Cliente: " + codigo;
+        return "Cliente: " + nome;
     }
 }

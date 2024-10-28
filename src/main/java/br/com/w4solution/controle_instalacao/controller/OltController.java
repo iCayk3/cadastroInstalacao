@@ -5,6 +5,7 @@ import br.com.w4solution.controle_instalacao.domain.olt.Cto;
 import br.com.w4solution.controle_instalacao.domain.olt.Olt;
 import br.com.w4solution.controle_instalacao.domain.olt.Porta;
 import br.com.w4solution.controle_instalacao.dto.olt.*;
+import br.com.w4solution.controle_instalacao.repository.cliente.ClienteRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.CtoRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.OltRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.PortaRepository;
@@ -30,6 +31,9 @@ public class OltController {
 
     @Autowired
     PortaRepository repositoryPorta;
+
+    @Autowired
+    ClienteRepository repositoryCliente;
 
     @GetMapping
     public ResponseEntity<List<OltDTO>> listarOlts(){
@@ -97,13 +101,11 @@ public class OltController {
     @Transactional
     public ResponseEntity<PortaDTO> atualizarPorta(@RequestBody AtualizarPortaDTO dados){
         Cliente cliente = new Cliente();
-        cliente.setCodigo(dados.codigoCliente());
+        cliente.setNome(dados.nomeCliente());
         System.out.println(cliente);
         var porta = repositoryPorta.findById(dados.portaId());
         if(porta.isPresent()){
-
-            porta.get().setClientes(cliente);
-
+            cliente.setPortaCliente(porta.get());
             System.out.println(porta.get());
             return ResponseEntity.ok(new PortaDTO(porta.get()));
         }

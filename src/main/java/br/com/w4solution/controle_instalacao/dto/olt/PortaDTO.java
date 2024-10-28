@@ -5,8 +5,8 @@ import br.com.w4solution.controle_instalacao.domain.olt.Porta;
 
 import java.util.List;
 
-public record PortaDTO(Long portaId, Integer numeroPorta, Cliente cliente) {
+public record PortaDTO(Integer numeroPorta, String nomeCliente) {
     public PortaDTO(Porta dados) {
-        this(dados.getId(), dados.getPorta(), dados.getClientes());
+        this(dados.getPorta(), dados.getClientes().getNome());
     }
 }

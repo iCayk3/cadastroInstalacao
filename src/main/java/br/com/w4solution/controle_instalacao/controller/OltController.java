@@ -53,12 +53,15 @@ public class OltController {
 
     @GetMapping("/cto/portas")
     public ResponseEntity<List<PortaDTO>> listarPortas(@RequestBody CtoDTO dados){
-        var cto = repositoryCto.findById(dados.id());
-        if(cto.isPresent()){
-            var portas = cto.get().getPortas().stream().map(PortaDTO::new).toList();
-            return ResponseEntity.ok(portas);
-        }
-        return ResponseEntity.notFound().build();
+        var portas = repositoryPorta.findPortasByCtoIdWithClientes(dados.id());
+        var portasEncontrada = portas.stream().map(p -> {
+            if(p.getClientes() != null){
+                return new PortaDTO(p.getPorta(), p.getClientes().getNome());
+            }else {
+                return new PortaDTO(p.getPorta(), null);
+            }
+        }).toList();
+        return ResponseEntity.ok(portasEncontrada);
     }
 
     @PostMapping

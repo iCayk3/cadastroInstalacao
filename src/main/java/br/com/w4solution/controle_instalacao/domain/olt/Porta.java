@@ -17,10 +17,11 @@ public class Porta {
     private Long id;
     private Integer porta;
 
-    @OneToOne(mappedBy = "portaCliente")
+    @OneToOne(mappedBy = "portaCliente", cascade = CascadeType.ALL)
     private Cliente clientes;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "cto_id")
     private Cto cto;
 
     public Porta(Porta p, Cto cto) {

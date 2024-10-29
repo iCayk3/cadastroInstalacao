@@ -1,8 +1,17 @@
 
 import './Formulario.css'
 import React, { useState } from 'react';
+import useFetch from '../../Services/useFetch';
+import useFetchCto from '../../Services/useFetchCto';
+import { useEffect } from 'react';
 
 const Formulario = (props) => {
+
+  const { dataApi, loading, error } = useFetch('http://localhost:8080/olt');
+  const { dataApiCto, loadingCto, errorCto } = useFetchCto(`http://localhost:8080/olt/${1}/cto`);
+
+  
+
   // Estados para armazenar os valores dos campos
   const [codigo, setCodigo] = useState('');
   const [cto, setCto] = useState('');
@@ -13,6 +22,9 @@ const Formulario = (props) => {
   const [procedimento, setProcedimento] = useState('');
   const [ctoAntiga, setCtoAntiga] = useState('');
   const [localidade, setLocalidade] = useState('');
+  const [apiUrlCto, setApiUrl] = useState(null);
+
+  
 
   // Função para lidar com o envio do formulário
   const handleSubmit = (e) => {
@@ -46,13 +58,48 @@ const Formulario = (props) => {
             />
           </div>
           <div className="form-group">
+            <label>OLT:</label>
+
+            {loading && <p>Carregando...</p>}
+            {error && <p>Erro: {error}</p>}
+            {dataApi && (
+              <select
+                value={olt}
+                onChange={(e) => setOlt(e.target.value)}
+                required
+              >
+                <option value="">Selecione a OLT</option>
+                {dataApi.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.nome} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
+                  </option>
+                ))}
+              </select>
+            )}
+
+
+            
+          </div>
+          <div className="form-group">
             <label>CTO:</label>
-            <input
-              type="text"
-              value={cto}
-              onChange={(e) => setCto(e.target.value)}
-              required
-            />
+
+            {loadingCto && <p>Carregando...</p>}
+            {errorCto && <p>Erro: {errorCto}</p>}
+            {dataApiCto && (
+              <select
+                value={cto}
+                onChange={(e) => setCto(e.target.value)}
+                required
+              >
+                <option value="">Selecione a CTO</option>
+                
+                {dataApiCto.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.nomeCto} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
           <div className="form-group">
             <label>Porta:</label>
@@ -63,15 +110,7 @@ const Formulario = (props) => {
               required
             />
           </div>
-          <div className="form-group">
-            <label>OLT:</label>
-            <input
-              type="text"
-              value={olt}
-              onChange={(e) => setOlt(e.target.value)}
-              required
-            />
-          </div>
+
           <div className="form-group">
             <label>Técnico:</label>
             <select

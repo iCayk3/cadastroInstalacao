@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.beans.Transient;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,9 +40,9 @@ public class OltController {
         return ResponseEntity.ok(olts);
     }
 
-    @GetMapping("/cto")
-    public ResponseEntity<List<CtoDTO>> listarCtos(@RequestBody OltDTO dados){
-        var olt = repository.findById(dados.id());
+    @GetMapping("{id}/cto")
+    public ResponseEntity<List<CtoDTO>> listarCtos(@PathVariable Long id){
+        var olt = repository.findById(id);
         if(olt.isPresent()){
             var ctos = olt.get().getCto().stream().map(CtoDTO::new).toList();
             return ResponseEntity.ok(ctos);
@@ -56,9 +55,9 @@ public class OltController {
         var portas = repositoryPorta.findPortasByCtoIdWithClientes(dados.id());
         var portasEncontrada = portas.stream().map(p -> {
             if(p.getClientes() != null){
-                return new PortaDTO(p.getPorta(), p.getClientes().getNome());
+                return new PortaDTO(p.getId(), p.getPorta(), p.getClientes().getNome());
             }else {
-                return new PortaDTO(p.getPorta(), null);
+                return new PortaDTO(p.getId(), p.getPorta(), null);
             }
         }).toList();
         return ResponseEntity.ok(portasEncontrada);

@@ -2,8 +2,11 @@ package br.com.w4solution.controle_instalacao.domain.cliente;
 
 
 import br.com.w4solution.controle_instalacao.domain.olt.Porta;
+import br.com.w4solution.controle_instalacao.domain.registro.Registro;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +25,9 @@ public class Cliente {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "porta_id", referencedColumnName = "id")
     private Porta portaCliente;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Registro> registros;
 
     public void atualizarCliente(String nome, Porta porta){
         if(nome != null){

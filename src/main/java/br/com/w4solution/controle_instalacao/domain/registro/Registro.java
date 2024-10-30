@@ -18,7 +18,8 @@ public class Registro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //private Cliente cliente;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Cliente cliente;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Olt olt;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

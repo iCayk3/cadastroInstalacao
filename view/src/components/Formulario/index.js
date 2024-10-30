@@ -3,12 +3,13 @@ import './Formulario.css'
 import React, { useState } from 'react';
 import useFetch from '../../Services/useFetch';
 import useFetchCto from '../../Services/useFetchCto';
-import { useEffect } from 'react';
+import useFetchPorta from '../../Services/useFetchPorta';
 
 const Formulario = (props) => {
 
   const { dataApi, loading, error } = useFetch('http://localhost:8080/olt');
   const { dataApiCto, loadingCto, errorCto } = useFetchCto(`http://localhost:8080/olt/${1}/cto`);
+  const { dataApiPorta, loadingPorta, errorPorta } = useFetchPorta(`http://localhost:8080/olt/cto/${1}/portas`);
 
   
 
@@ -22,7 +23,6 @@ const Formulario = (props) => {
   const [procedimento, setProcedimento] = useState('');
   const [ctoAntiga, setCtoAntiga] = useState('');
   const [localidade, setLocalidade] = useState('');
-  const [apiUrlCto, setApiUrl] = useState(null);
 
   
 
@@ -76,9 +76,6 @@ const Formulario = (props) => {
                 ))}
               </select>
             )}
-
-
-            
           </div>
           <div className="form-group">
             <label>CTO:</label>
@@ -103,12 +100,24 @@ const Formulario = (props) => {
           </div>
           <div className="form-group">
             <label>Porta:</label>
-            <input
-              type="text"
-              value={porta}
-              onChange={(e) => setPorta(e.target.value)}
-              required
-            />
+
+            {loadingPorta && <p>Carregando...</p>}
+            {errorPorta && <p>Erro: {errorPorta}</p>}
+            {dataApiPorta && (
+              <select
+                value={porta}
+                onChange={(e) => setPorta(e.target.value)}
+                required
+              >
+                <option value="">Selecione a Porta</option>
+                
+                {dataApiPorta.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.numeroPorta + ": " + item.nomeCliente} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div className="form-group">
@@ -135,11 +144,20 @@ const Formulario = (props) => {
           </div>
           <div className="form-group">
             <label>Procedimento:</label>
-            <input
+            <select
               value={procedimento}
               onChange={(e) => setProcedimento(e.target.value)}
               required
-            />
+            >
+              <option value="">Selecione o Técnico</option>
+              <option value="INSTALACAO">INSTALAÇÃO</option>
+              <option value="MUDANCA_ENDERECO">MUDANCA DE ENDEREÇO</option>
+              <option value="REPARO">REPARO</option>
+              <option value="TROCA_EQUIPAMENTO">TROCA DE EQUIPAMENTO</option>
+              <option value="CANCELAMENTO">CANCELAMENTO</option>
+              <option value="REATIVACAO">REATIVAÇÃO</option>
+              <option value="MIGRACAO">MIGRAÇÃO</option>
+            </select>
           </div>
           <div className="form-group">
             <label>CTO Antiga:</label>

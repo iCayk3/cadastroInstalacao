@@ -1,6 +1,6 @@
 
 import './Formulario.css'
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import useFetch from '../../Services/useFetch';
 import useFetchCto from '../../Services/useFetchCto';
 import useFetchPorta from '../../Services/useFetchPorta';
@@ -23,6 +23,13 @@ const Formulario = (props) => {
   const [procedimento, setProcedimento] = useState('');
   const [ctoAntiga, setCtoAntiga] = useState('');
   const [localidade, setLocalidade] = useState('');
+
+  useEffect(() => {
+    // Define a data atual no formato YYYY-MM-DD ao carregar o componente
+    const today = new Date();
+    setData(today.toISOString().slice(0, 10)); // Formato YYYY-MM-DD
+  }, []);
+
 
   
 
@@ -136,6 +143,8 @@ const Formulario = (props) => {
           <div className="form-group">
             <label>Data:</label>
             <input
+              id="date"
+              name="date"
               type="date"
               value={data}
               onChange={(e) => setData(e.target.value)}
@@ -145,7 +154,7 @@ const Formulario = (props) => {
           <div className="form-group">
             <label>Procedimento:</label>
             <select
-              value={procedimento}
+              value={procedimento }
               onChange={(e) => setProcedimento(e.target.value)}
               required
             >

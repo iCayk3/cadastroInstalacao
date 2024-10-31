@@ -46,8 +46,8 @@ public class Registro {
 
 
     private LocalDateTime converterParaData(String data){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        return LocalDateTime.parse(data, formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(data + " 00:00:00", formatter);
     }
 
 

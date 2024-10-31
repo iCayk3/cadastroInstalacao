@@ -9,7 +9,7 @@ const Formulario = (props) => {
 
   const { dataApi, loading, error } = useFetch('http://localhost:8080/olt');
   const { dataApiCto, loadingCto, errorCto } = useFetchCto(`http://localhost:8080/olt/${1}/cto`);
-  const { dataApiPorta, loadingPorta, errorPorta } = useFetchPorta(`http://localhost:8080/olt/cto/${1}/portas`);
+  const { dataApiPorta, loadingPorta, errorPorta } = useFetchPorta(`http://localhost:8080/olt/cto/1/portas`);
 
   
 
@@ -30,9 +30,59 @@ const Formulario = (props) => {
     setData(today.toISOString().slice(0, 10)); // Formato YYYY-MM-DD
   }, []);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Impede o comportamento padrão do formulário
 
+    const formData = {
+      codigo: parseInt(codigo, 10),
+      olt: parseInt(olt, 10),
+      cto: parseInt(cto, 10),
+      porta: parseInt(porta, 10),
+      tecnico: parseInt(tecnico, 10),
+      data,
+      procedimento,
+      ctoAntiga,
+      localidade,
+    };
+
+    try {
+      console.log(JSON.stringify(formData))
+      const response = await fetch('http://localhost:8080/registros', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData), // Converte os dados do formulário em JSON
+      });
+      
+      console.log(response)
+
+      if (!response.ok) {
+        throw new Error('Erro ao enviar o formulário');
+      }
+
+      const result = await response.json();
+      console.log(JSON.stringify(formData))
+      console.log('Dados enviados com sucesso:', result);
+
+      // Opcional: Resetar o formulário após o envio bem-sucedido
+      setCodigo('');
+      setOlt('');
+      setCto('');
+      setPorta('');
+      setTecnico('');
+      setData('');
+      setProcedimento('');
+      setCtoAntiga('');
+      setLocalidade('');
+
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      //alert('Ocorreu um erro ao enviar os dados. Tente novamente.');
+    }
+  };
   
-
+/*
   // Função para lidar com o envio do formulário
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,7 +99,7 @@ const Formulario = (props) => {
     };
     console.log('Dados enviados:', formData);
     // Aqui você pode enviar os dados para o backend ou processá-los como desejar
-  };
+  };*/
 
   return (
     <div className="form-container">
@@ -112,11 +162,11 @@ const Formulario = (props) => {
             {errorPorta && <p>Erro: {errorPorta}</p>}
             {dataApiPorta && (
               <select
-                value={porta}
+                value={porta.idPorta}
                 onChange={(e) => setPorta(e.target.value)}
                 required
               >
-                <option value="">Selecione a Porta</option>
+                <option value={porta}>Selecione a Porta</option>
                 
                 {dataApiPorta.map((item) => (
                   <option key={item.id} value={item.id}>
@@ -135,7 +185,7 @@ const Formulario = (props) => {
               required
             >
               <option value="">Selecione o Técnico</option>
-              <option value="Tecnico 1">Técnico 1</option>
+              <option value="1">Técnico 1</option>
               <option value="Tecnico 2">Técnico 2</option>
               <option value="Tecnico 3">Técnico 3</option>
             </select>
@@ -174,7 +224,6 @@ const Formulario = (props) => {
               type="text"
               value={ctoAntiga}
               onChange={(e) => setCtoAntiga(e.target.value)}
-              required
             />
           </div>
           <div className="form-group">

@@ -107,9 +107,9 @@ public class OltController {
         System.out.println(cliente);
         var porta = repositoryPorta.findById(dados.portaId());
         if(porta.isPresent()){
+            var portaEncontrada = porta.get();
             cliente.setPortaCliente(porta.get());
-            System.out.println(porta.get());
-            return ResponseEntity.ok(new PortaDTO(porta.get()));
+            return ResponseEntity.ok(new PortaDTO(portaEncontrada.getId(), portaEncontrada.getPorta(), portaEncontrada.getClientes().getNome()));
         }
 
         return ResponseEntity.notFound().build();

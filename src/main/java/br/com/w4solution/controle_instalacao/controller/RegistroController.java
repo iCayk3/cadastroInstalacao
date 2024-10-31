@@ -43,13 +43,13 @@ public class RegistroController {
     public ResponseEntity<RegistroDTO> cadastroRegistro(@RequestBody CadastroRegistroDTO dados){
         Cliente cliente = null;
         System.out.println(dados.codigo());
-        var buscaPorta = portaRepository.findById(dados.idPorta());
+        var buscaPorta = portaRepository.findById(dados.porta());
         var buscaCliente = clienteRepository.findByCodigo(dados.codigo());
         cliente = buscaCliente.orElseGet(() -> {
             return new Cliente(null, "Nome", dados.codigo(), buscaPorta.get(), null);
         });
-        var buscaOlt = oltRepository.findById(dados.idOlt()).get();
-        var equipeTecnica = equipeTecnicaRepository.findById(dados.idEquipeTecnica()).get();
+        var buscaOlt = oltRepository.findById(dados.olt()).get();
+        var equipeTecnica = equipeTecnicaRepository.findById(dados.tecnico()).get();
         var registro = new Registro(null, cliente, buscaOlt, equipeTecnica, dados.data(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
 
         registroRepository.save(registro);

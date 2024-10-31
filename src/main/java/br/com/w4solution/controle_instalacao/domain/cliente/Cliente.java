@@ -21,7 +21,8 @@ public class Cliente {
     private Long id;
 
     private String nome;
-
+    @Column(unique = true)
+    private Integer codigo;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "porta_id", referencedColumnName = "id")
     private Porta portaCliente;

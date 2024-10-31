@@ -24,7 +24,7 @@ public class ClienteController {
 
     @PostMapping
     ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody ClienteCadastroDTO dados, UriComponentsBuilder uri){
-        var cliente = new Cliente(null, dados.nome(), null, null);
+        var cliente = new Cliente(null, dados.nome(), null,null, null);
         repository.save(cliente);
         var clienteCriado = uri.path("cliente/{id}").buildAndExpand(cliente.getId()).toUri();
         return ResponseEntity.created(clienteCriado).body(new ClienteDTO(cliente));

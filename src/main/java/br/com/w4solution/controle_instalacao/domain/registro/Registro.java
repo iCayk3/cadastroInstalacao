@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "registros")
@@ -32,4 +33,22 @@ public class Registro {
     private Procedimento procedimento;
     private String ctoAntiga;
     private String localidade;
+
+    public Registro(Long id, Cliente cliente, Olt buscaOlt, EquipeTecnica equipeTecnica, String data, Procedimento procedimento, String ctoAntiga, String localidade) {
+        this.cliente = cliente;
+        this.olt = buscaOlt;
+        this.equipeTecnica = equipeTecnica;
+        this.data = converterParaData(data);
+        this.procedimento = procedimento;
+        this.ctoAntiga = ctoAntiga;
+        this.localidade = localidade;
+    }
+
+
+    private LocalDateTime converterParaData(String data){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        return LocalDateTime.parse(data, formatter);
+    }
+
+
 }

@@ -1,23 +1,21 @@
 package br.com.w4solution.controle_instalacao.controller;
 
 import br.com.w4solution.controle_instalacao.domain.cliente.Cliente;
-import br.com.w4solution.controle_instalacao.domain.olt.Porta;
 import br.com.w4solution.controle_instalacao.domain.registro.Registro;
 import br.com.w4solution.controle_instalacao.dto.registro.CadastroRegistroDTO;
 import br.com.w4solution.controle_instalacao.dto.registro.RegistroDTO;
 import br.com.w4solution.controle_instalacao.repository.cliente.ClienteRepository;
 import br.com.w4solution.controle_instalacao.repository.equipeTecnica.EquipeTecnicaRepository;
-import br.com.w4solution.controle_instalacao.repository.olt.CtoRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.OltRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.PortaRepository;
 import br.com.w4solution.controle_instalacao.repository.registro.RegistroRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("registros")
@@ -37,6 +35,12 @@ public class RegistroController {
 
     @Autowired
     RegistroRepository registroRepository;
+
+    @GetMapping
+    public ResponseEntity<Page<RegistroDTO>> listarRegistro(@PageableDefault(size = 8) Pageable paginacao){
+        var registros = registroRepository.findAll(paginacao);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping
     @Transactional

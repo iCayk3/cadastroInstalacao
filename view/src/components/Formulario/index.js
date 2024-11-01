@@ -4,12 +4,14 @@ import React, {useEffect, useState } from 'react';
 import useFetch from '../../Services/useFetch';
 import useFetchCto from '../../Services/useFetchCto';
 import useFetchPorta from '../../Services/useFetchPorta';
+import useFetchTecnico from '../../Services/useFetchTecnico';
 
 const Formulario = (props) => {
 
   const { dataApi, loading, error } = useFetch('http://localhost:8080/olt');
   const { dataApiCto, loadingCto, errorCto } = useFetchCto(`http://localhost:8080/olt/${1}/cto`);
   const { dataApiPorta, loadingPorta, errorPorta } = useFetchPorta(`http://localhost:8080/olt/cto/1/portas`);
+  const { dataApiTecnico, loadingTecnico, errorTecnico } = useFetchTecnico(`http://localhost:8080/tecnico/equipes`);
 
   
 
@@ -170,7 +172,7 @@ const Formulario = (props) => {
                 
                 {dataApiPorta.map((item) => (
                   <option key={item.id} value={item.id}>
-                    {item.numeroPorta + ": " + item.nomeCliente} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
+                    {item.numeroPorta + ": " + item.codigo} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
                   </option>
                 ))}
               </select>
@@ -179,16 +181,23 @@ const Formulario = (props) => {
 
           <div className="form-group">
             <label>Técnico:</label>
-            <select
-              value={tecnico}
-              onChange={(e) => setTecnico(e.target.value)}
-              required
-            >
-              <option value="">Selecione o Técnico</option>
-              <option value="1">Técnico 1</option>
-              <option value="Tecnico 2">Técnico 2</option>
-              <option value="Tecnico 3">Técnico 3</option>
-            </select>
+            {loadingTecnico && <p>Carregando...</p>}
+            {errorTecnico && <p>Erro: {errorPorta}</p>}
+            {dataApiTecnico && (
+              <select
+                value={tecnico.id}
+                onChange={(e) => setTecnico(e.target.value)}
+                required
+              >
+                <option value={tecnico}>Selecione a equipe técnica</option>
+                
+                {dataApiTecnico.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.nomeEquipe} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
           <div className="form-group">
             <label>Data:</label>

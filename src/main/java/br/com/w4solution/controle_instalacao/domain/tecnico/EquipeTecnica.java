@@ -2,9 +2,7 @@ package br.com.w4solution.controle_instalacao.domain.tecnico;
 
 import br.com.w4solution.controle_instalacao.domain.registro.Registro;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
+@Getter
+@Setter
 public class EquipeTecnica {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

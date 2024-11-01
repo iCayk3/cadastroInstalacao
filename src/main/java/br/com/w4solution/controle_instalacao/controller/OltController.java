@@ -55,7 +55,7 @@ public class OltController {
         var portas = repositoryPorta.findPortasByCtoIdWithClientes(id);
         var portasEncontrada = portas.stream().map(p -> {
             if(p.getClientes() != null){
-                return new PortaDTO(p.getId(), p.getPorta(), p.getClientes().getNome());
+                return new PortaDTO(p.getId(), p.getPorta(), p.getClientes().getCodigo());
             }else {
                 return new PortaDTO(p.getId(), p.getPorta(), null);
             }
@@ -109,7 +109,7 @@ public class OltController {
         if(porta.isPresent()){
             var portaEncontrada = porta.get();
             cliente.setPortaCliente(porta.get());
-            return ResponseEntity.ok(new PortaDTO(portaEncontrada.getId(), portaEncontrada.getPorta(), portaEncontrada.getClientes().getNome()));
+            return ResponseEntity.ok(new PortaDTO(portaEncontrada.getId(), portaEncontrada.getPorta(), portaEncontrada.getClientes().getCodigo()));
         }
 
         return ResponseEntity.notFound().build();

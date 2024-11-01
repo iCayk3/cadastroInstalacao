@@ -44,7 +44,7 @@ public class RegistroController {
 
     @GetMapping
     public ResponseEntity<List<RegistroDTO>> listarRegistro(@PageableDefault(size = 8) Pageable paginacao){
-        var registros = registroRepository.findAll().stream().map(r -> {
+        var registros = registroRepository.findTop5ByOrderByIdDesc().stream().map(r -> {
             return new RegistroDTO(r.getCliente().getCodigo(), r.getOlt().getNome(), r.getCtoRegistro().getNomeCto(),
                     r.getPorta().getPorta(), r.getEquipeTecnica().getNomeEquipe(), r.getData().toLocalDate(), r.getProcedimento().toString(),
                     r.getCtoAntiga(), r.getLocalidade());

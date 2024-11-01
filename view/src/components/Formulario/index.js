@@ -1,19 +1,19 @@
 
 import './Formulario.css'
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useFetch from '../../Services/useFetch';
 import useFetchCto from '../../Services/useFetchCto';
 import useFetchPorta from '../../Services/useFetchPorta';
 import useFetchTecnico from '../../Services/useFetchTecnico';
 
-const Formulario = (props) => {
+const Formulario = ({ onFormSubmit }) => {
 
-  const { dataApi, loading, error } = useFetch('http://localhost:8080/olt');
+  const { data, loading, error } = useFetch('http://localhost:8080/olt');
   const { dataApiCto, loadingCto, errorCto } = useFetchCto(`http://localhost:8080/olt/${1}/cto`);
   const { dataApiPorta, loadingPorta, errorPorta } = useFetchPorta(`http://localhost:8080/olt/cto/1/portas`);
   const { dataApiTecnico, loadingTecnico, errorTecnico } = useFetchTecnico(`http://localhost:8080/tecnico/equipes`);
 
-  
+
 
   // Estados para armazenar os valores dos campos
   const [codigo, setCodigo] = useState('');
@@ -21,13 +21,13 @@ const Formulario = (props) => {
   const [porta, setPorta] = useState('');
   const [olt, setOlt] = useState('');
   const [tecnico, setTecnico] = useState('');
-  const [data, setData] = useState('');
+  const [dataregistro, setData] = useState('');
   const [procedimento, setProcedimento] = useState('');
   const [ctoAntiga, setCtoAntiga] = useState('');
   const [localidade, setLocalidade] = useState('');
 
   useEffect(() => {
-    // Define a data atual no formato YYYY-MM-DD ao carregar o componente
+    // Define a dataregistro atual no formato YYYY-MM-DD ao carregar o componente
     const today = new Date();
     setData(today.toISOString().slice(0, 10)); // Formato YYYY-MM-DD
   }, []);
@@ -41,7 +41,7 @@ const Formulario = (props) => {
       cto: parseInt(cto, 10),
       porta: parseInt(porta, 10),
       tecnico: parseInt(tecnico, 10),
-      data,
+      dataregistro,
       procedimento,
       ctoAntiga,
       localidade,
@@ -56,9 +56,9 @@ const Formulario = (props) => {
         },
         body: JSON.stringify(formData), // Converte os dados do formulário em JSON
       });
-      
-      console.log(response)
 
+      console.log(response)
+      onFormSubmit();
       if (!response.ok) {
         throw new Error('Erro ao enviar o formulário');
       }
@@ -83,25 +83,25 @@ const Formulario = (props) => {
       //alert('Ocorreu um erro ao enviar os dados. Tente novamente.');
     }
   };
-  
-/*
-  // Função para lidar com o envio do formulário
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const formData = {
-      codigo,
-      cto,
-      porta,
-      olt,
-      tecnico,
-      data,
-      procedimento,
-      ctoAntiga,
-      localidade,
-    };
-    console.log('Dados enviados:', formData);
-    // Aqui você pode enviar os dados para o backend ou processá-los como desejar
-  };*/
+
+  /*
+    // Função para lidar com o envio do formulário
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const formData = {
+        codigo,
+        cto,
+        porta,
+        olt,
+        tecnico,
+        dataregistro,
+        procedimento,
+        ctoAntiga,
+        localidade,
+      };
+      console.log('Dados enviados:', formData);
+      // Aqui você pode enviar os dados para o backend ou processá-los como desejar
+    };*/
 
   return (
     <div className="form-container">
@@ -121,14 +121,14 @@ const Formulario = (props) => {
 
             {loading && <p>Carregando...</p>}
             {error && <p>Erro: {error}</p>}
-            {dataApi && (
+            {data && (
               <select
                 value={olt}
                 onChange={(e) => setOlt(e.target.value)}
                 required
               >
                 <option value="">Selecione a OLT</option>
-                {dataApi.map((item) => (
+                {data.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.nome} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
                   </option>
@@ -148,7 +148,7 @@ const Formulario = (props) => {
                 required
               >
                 <option value="">Selecione a CTO</option>
-                
+
                 {dataApiCto.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.nomeCto} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
@@ -169,7 +169,7 @@ const Formulario = (props) => {
                 required
               >
                 <option value={porta}>Selecione a Porta</option>
-                
+
                 {dataApiPorta.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.numeroPorta + ": " + item.codigo} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
@@ -190,7 +190,7 @@ const Formulario = (props) => {
                 required
               >
                 <option value={tecnico}>Selecione a equipe técnica</option>
-                
+
                 {dataApiTecnico.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.nomeEquipe} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
@@ -205,7 +205,7 @@ const Formulario = (props) => {
               id="date"
               name="date"
               type="date"
-              value={data}
+              value={dataregistro}
               onChange={(e) => setData(e.target.value)}
               required
             />
@@ -213,7 +213,7 @@ const Formulario = (props) => {
           <div className="form-group">
             <label>Procedimento:</label>
             <select
-              value={procedimento }
+              value={procedimento}
               onChange={(e) => setProcedimento(e.target.value)}
               required
             >

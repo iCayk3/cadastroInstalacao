@@ -1,7 +1,9 @@
 package br.com.w4solution.controle_instalacao.domain.registro;
 
 import br.com.w4solution.controle_instalacao.domain.cliente.Cliente;
+import br.com.w4solution.controle_instalacao.domain.olt.Cto;
 import br.com.w4solution.controle_instalacao.domain.olt.Olt;
+import br.com.w4solution.controle_instalacao.domain.olt.Porta;
 import br.com.w4solution.controle_instalacao.domain.tecnico.EquipeTecnica;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,10 @@ public class Registro {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Olt olt;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Cto ctoRegistro;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Porta porta;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private EquipeTecnica equipeTecnica;
     private LocalDateTime data;
     @Enumerated(EnumType.STRING)
@@ -34,7 +40,7 @@ public class Registro {
     private String ctoAntiga;
     private String localidade;
 
-    public Registro(Long id, Cliente cliente, Olt buscaOlt, EquipeTecnica equipeTecnica, String data, Procedimento procedimento, String ctoAntiga, String localidade) {
+    public Registro(Long id, Cliente cliente, Olt buscaOlt, Cto cto, Porta porta, EquipeTecnica equipeTecnica, String data, Procedimento procedimento, String ctoAntiga, String localidade) {
         this.cliente = cliente;
         this.olt = buscaOlt;
         this.equipeTecnica = equipeTecnica;
@@ -42,6 +48,8 @@ public class Registro {
         this.procedimento = procedimento;
         this.ctoAntiga = ctoAntiga;
         this.localidade = localidade;
+        this.ctoRegistro = cto;
+        this.porta = porta;
     }
 
 

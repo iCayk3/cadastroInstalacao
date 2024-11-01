@@ -6,6 +6,7 @@ import br.com.w4solution.controle_instalacao.dto.registro.CadastroRegistroDTO;
 import br.com.w4solution.controle_instalacao.dto.registro.RegistroDTO;
 import br.com.w4solution.controle_instalacao.repository.cliente.ClienteRepository;
 import br.com.w4solution.controle_instalacao.repository.equipeTecnica.EquipeTecnicaRepository;
+import br.com.w4solution.controle_instalacao.repository.olt.CtoRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.OltRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.PortaRepository;
 import br.com.w4solution.controle_instalacao.repository.registro.RegistroRepository;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("registros")
@@ -36,10 +39,18 @@ public class RegistroController {
     @Autowired
     RegistroRepository registroRepository;
 
+    @Autowired
+    CtoRepository ctoRepository;
+
     @GetMapping
-    public ResponseEntity<Page<RegistroDTO>> listarRegistro(@PageableDefault(size = 8) Pageable paginacao){
-        var registros = registroRepository.findAll(paginacao);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<List<RegistroDTO>> listarRegistro(@PageableDefault(size = 8) Pageable paginacao){
+        var registros = registroRepository.findAll().stream().map(r -> {
+            return new RegistroDTO(r.getCliente().getCodigo(), r.getOlt().getNome(), r.getCtoRegistro().getNomeCto(),
+                    r.getPorta().getPorta(), r.getEquipeTecnica().getNomeEquipe(), r.getData().toLocalDate(), r.getProcedimento().toString(),
+                    r.getCtoAntiga(), r.getLocalidade());
+        }).toList();
+
+        return ResponseEntity.ok(registros);
     }
 
     @PostMapping
@@ -53,8 +64,9 @@ public class RegistroController {
             return new Cliente(null, "Nome", dados.codigo(), buscaPorta.get(), null);
         });
         var buscaOlt = oltRepository.findById(dados.olt()).get();
+        var buscaCto = ctoRepository.findById(dados.cto()).get();
         var equipeTecnica = equipeTecnicaRepository.findById(dados.tecnico()).get();
-        var registro = new Registro(null, cliente, buscaOlt, equipeTecnica, dados.data(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
+        var registro = new Registro(null, cliente, buscaOlt, buscaCto, buscaPorta.get(), equipeTecnica, dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
 
         registroRepository.save(registro);
 

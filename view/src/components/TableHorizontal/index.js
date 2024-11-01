@@ -1,15 +1,17 @@
 import React from 'react';
 import './TableHorizontal.css'
 
-const TableHorizontal = () => {
+const TableHorizontal = ({ data, loading, error }) => {
 
-    const tableData = [{codigo:5, cto:4, porta:15, olt:"PIRABAS", 
-        tecnico:"equipe 01", data:"15/04/2024", procedimento: "Reparo", ctoAntiga:"", localidade:"Pirabas"}]
+  console.log(data)
 
   return (
     <div className="table-container">
       <h3>Dados Cadastrados</h3>
-      {tableData.length > 0 ? (
+      {loading && <p>Carregando dados...</p>}
+      {error && <p>Erro ao carregar os dados: {error.message}</p>}
+
+      {data && data.length > 0 ? (
         <table>
           <thead>
             <tr>
@@ -25,13 +27,13 @@ const TableHorizontal = () => {
             </tr>
           </thead>
           <tbody>
-            {tableData.map((row, index) => (
+            {data.map((row, index) => (
               <tr key={index}>
                 <td>{row.codigo}</td>
-                <td>{row.cto}</td>
+                <td>{row.nomeCto}</td>
                 <td>{row.porta}</td>
-                <td>{row.olt}</td>
-                <td>{row.tecnico}</td>
+                <td>{row.nomeOlt}</td>
+                <td>{row.nomeEquipeTecnica}</td>
                 <td>{row.data}</td>
                 <td>{row.procedimento}</td>
                 <td>{row.ctoAntiga}</td>
@@ -41,8 +43,9 @@ const TableHorizontal = () => {
           </tbody>
         </table>
       ) : (
-        <p>Nenhum dado cadastrado.</p>
+        !loading && <p>Nenhum dado cadastrado.</p>
       )}
+
     </div>
   );
 };

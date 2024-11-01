@@ -1,5 +1,6 @@
 package br.com.w4solution.controle_instalacao.domain.olt;
 
+import br.com.w4solution.controle_instalacao.domain.registro.Registro;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,8 @@ public class Cto {
     private List<Porta> portas;
     @ManyToOne
     private Olt olt;
+    @OneToMany(mappedBy = "ctoRegistro")
+    private List<Registro> registros;
 
 
     @Override

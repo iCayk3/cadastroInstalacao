@@ -81,7 +81,7 @@ public class OltController {
         var olt = repository.findById(dados.idOlt());
         List<Porta> portas = null;
         var portasDados = dados.portas();
-        var cto = new Cto(null, dados.nomeCto(), null, olt.get());
+        var cto = new Cto(null, dados.nomeCto(), null, olt.get(), null);
         portas = portasDados.stream().map(p -> new Porta(p, cto)).collect(Collectors.toList());
         portas.forEach(System.out::println);
 

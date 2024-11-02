@@ -2,15 +2,12 @@
 import './Formulario.css'
 import React, { useEffect, useState } from 'react';
 import useFetch from '../../Services/useFetch';
-import useFetchCto from '../../Services/useFetchCto';
-import useFetchPorta from '../../Services/useFetchPorta';
 import useFetchTecnico from '../../Services/useFetchTecnico';
 
 const Formulario = ({ onFormSubmit }) => {
 
   const { data, loading, error } = useFetch('http://localhost:8080/olt');
-  const { dataApiCto, loadingCto, errorCto } = useFetchCto(`http://localhost:8080/olt/${1}/cto`);
-  const { dataApiPorta, loadingPorta, errorPorta } = useFetchPorta(`http://localhost:8080/olt/cto/1/portas`);
+  
   const { dataApiTecnico, loadingTecnico, errorTecnico } = useFetchTecnico(`http://localhost:8080/tecnico/equipes`);
 
 
@@ -25,12 +22,64 @@ const Formulario = ({ onFormSubmit }) => {
   const [procedimento, setProcedimento] = useState('');
   const [ctoAntiga, setCtoAntiga] = useState('');
   const [localidade, setLocalidade] = useState('');
+  const [dataApiCto, setDataApiCto] = useState([]);
+  const [loadingCto, setLoadingCto] = useState(false);
+  const [errorCto, setErrorCto] = useState(null);
+  const [dataApiPorta, setDataApiPorta] = useState([]);
+  const [loadingPorta, setLoadingPorta] = useState(false);
+  const [errorPorta, setErrorPorta] = useState(null);
 
   useEffect(() => {
     // Define a dataregistro atual no formato YYYY-MM-DD ao carregar o componente
     const today = new Date();
     setData(today.toISOString().slice(0, 10)); // Formato YYYY-MM-DD
   }, []);
+
+  useEffect(() => {
+    if (olt) {
+      const fetchCto = async () => {
+        setLoadingCto(true);
+        setErrorCto(null);
+        try {
+          const response = await fetch(`http://localhost:8080/olt/${olt}/cto`);
+          if (!response.ok) throw new Error('Erro ao carregar CTO');
+          const data = await response.json();
+          setDataApiCto(data);
+        } catch (error) {
+          setErrorCto(error.message);
+        } finally {
+          setLoadingCto(false);
+        }
+      };
+      fetchCto();
+    } else {
+      // Reseta as CTOs quando nenhuma OLT é selecionada
+      setDataApiCto([]);
+    }
+  }, [olt]);
+
+  useEffect(() => {
+    if (cto) {
+      const fetchCto = async () => {
+        setLoadingPorta(true);
+        setErrorPorta(null);
+        try {
+          const response = await fetch(`http://localhost:8080/olt/cto/${cto}/portas`);
+          if (!response.ok) throw new Error('Erro ao carregar CTO');
+          const data = await response.json();
+          setDataApiPorta(data);
+        } catch (error) {
+          setErrorPorta(error.message);
+        } finally {
+          setLoadingPorta(false);
+        }
+      };
+      fetchCto();
+    } else {
+      // Reseta as CTOs quando nenhuma OLT é selecionada
+      setDataApiPorta([]);
+    }
+  }, [cto]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Impede o comportamento padrão do formulário
@@ -56,7 +105,7 @@ const Formulario = ({ onFormSubmit }) => {
         },
         body: JSON.stringify(formData), // Converte os dados do formulário em JSON
       });
-
+      console.log(formData)
       console.log(response)
       onFormSubmit();
       if (!response.ok) {
@@ -83,25 +132,6 @@ const Formulario = ({ onFormSubmit }) => {
       //alert('Ocorreu um erro ao enviar os dados. Tente novamente.');
     }
   };
-
-  /*
-    // Função para lidar com o envio do formulário
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      const formData = {
-        codigo,
-        cto,
-        porta,
-        olt,
-        tecnico,
-        dataregistro,
-        procedimento,
-        ctoAntiga,
-        localidade,
-      };
-      console.log('Dados enviados:', formData);
-      // Aqui você pode enviar os dados para o backend ou processá-los como desejar
-    };*/
 
   return (
     <div className="form-container">
@@ -171,8 +201,8 @@ const Formulario = ({ onFormSubmit }) => {
                 <option value={porta}>Selecione a Porta</option>
 
                 {dataApiPorta.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.numeroPorta + ": " + item.codigo} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
+                  <option key={item.idPorta} value={item.idPorta}>
+                    {item.idPorta +" " + item.numeroPorta + ": " + item.codigo} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
                   </option>
                 ))}
               </select>

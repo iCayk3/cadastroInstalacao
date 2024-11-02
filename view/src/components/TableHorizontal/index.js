@@ -3,8 +3,6 @@ import './TableHorizontal.css'
 
 const TableHorizontal = ({ data, loading, error }) => {
 
-  console.log(data)
-
   return (
     <div className="table-container">
       <h3>Dados Cadastrados</h3>

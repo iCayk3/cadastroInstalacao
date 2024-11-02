@@ -4,6 +4,10 @@
     box-sizing: border-box;
   }
   
+  .tablecomponent h1 {
+    
+  }
+
  .tablecomponent th, td {
     border: 1px solid #ddd;
     padding: 8px;

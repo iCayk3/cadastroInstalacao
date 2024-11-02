@@ -1,60 +1,52 @@
+import React from 'react';
 import './TableComponent.css'
 
-const TableComponent = () => {
-    const data = [
-        { instalacao: 20, mudancaEndereco: 28, reparo: 40, trocaEquipamento: 18, cancelamento: 8, reativacao: 14, migracao: 4 },
-    ];
+const TableComponent = ({dataApiCto, loagdinCto, errorCto}) => {
+
+    if (loagdinCto) return <p>Carregando...</p>;
+    if (errorCto) return <p>Erro ao carregar os dados: {errorCto}</p>;
+
+    // Verifica se `dataApiCto` existe e é um objeto
+    if (!dataApiCto || typeof dataApiCto !== 'object') {
+        return <p>Nenhum dado disponível.</p>;
+    }
 
     return (
         <div className='tablecomponent'>
+            <h1>Total mensal</h1>
             <table>
                 <tbody>
                     <tr>
-                        <th>Instalacao</th>
-                        {data.map((item, index) => (
-                            <td key={index}>{item.instalacao}</td>
-                        ))}
+                        <th>Instalação</th>
+                        <td>{dataApiCto.instalacao}</td>
                     </tr>
                     <tr>
-                        <th>Mudança de endereco</th>
-                        {data.map((item, index) => (
-                            <td key={index}>{item.mudancaEndereco}</td>
-                        ))}
+                        <th>Mudança de Endereço</th>
+                        <td>{dataApiCto.mudancaEndereco}</td>
                     </tr>
                     <tr>
                         <th>Reparo</th>
-                        {data.map((item, index) => (
-                            <td key={index}>{item.reparo}</td>
-                        ))}
+                        <td>{dataApiCto.reparo}</td>
                     </tr>
                     <tr>
-                        <th>Troca de equipamento</th>
-                        {data.map((item, index) => (
-                            <td key={index}>{item.trocaEquipamento}</td>
-                        ))}
+                        <th>Troca de Equipamento</th>
+                        <td>{dataApiCto.trocaEquipamento}</td>
                     </tr>
                     <tr>
                         <th>Cancelamento</th>
-                        {data.map((item, index) => (
-                            <td key={index}>{item.cancelamento}</td>
-                        ))}
+                        <td>{dataApiCto.cancelamento}</td>
                     </tr>
                     <tr>
                         <th>Reativação</th>
-                        {data.map((item, index) => (
-                            <td key={index}>{item.reativacao}</td>
-                        ))}
+                        <td>{dataApiCto.reativacao}</td>
                     </tr>
                     <tr>
                         <th>Migração</th>
-                        {data.map((item, index) => (
-                            <td key={index}>{item.migracao}</td>
-                        ))}
+                        <td>{dataApiCto.migracao}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
     );
 };
 

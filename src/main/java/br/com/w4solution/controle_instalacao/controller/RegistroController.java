@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
 @RequestMapping("registros")
 public class RegistroController {
@@ -46,11 +48,12 @@ public class RegistroController {
     CtoRepository ctoRepository;
 
     @GetMapping
-    public ResponseEntity<List<RegistroDTO>> listarRegistro(@PageableDefault(size = 8) Pageable paginacao){
+    public ResponseEntity<List<RegistroDTO>> listarRegistro(){
         var registros = registroRepository.findTop5ByOrderByIdDesc().stream().map(r -> {
-            return new RegistroDTO(r.getCliente().getCodigo(), r.getOlt().getNome(), r.getCtoRegistro().getNomeCto(),
-                    r.getPorta().getPorta(), r.getEquipeTecnica().getNomeEquipe(), r.getData().toLocalDate(), r.getProcedimento().toString(),
-                    r.getCtoAntiga(), r.getLocalidade());
+                return new RegistroDTO(r.getCliente().getCodigo(), r.getOlt().getNome(), r.getCtoRegistro().getNomeCto(),
+                        r.getPorta().getPorta(), r.getEquipeTecnica().getNomeEquipe(), r.getData().toLocalDate(), r.getProcedimento().toString(),
+                        r.getCtoAntiga(), r.getLocalidade().toUpperCase());
+
         }).toList();
 
         return ResponseEntity.ok(registros);
@@ -94,18 +97,24 @@ public class RegistroController {
     @PostMapping
     @Transactional
     public ResponseEntity<RegistroDTO> cadastroRegistro(@RequestBody CadastroRegistroDTO dados){
+        Registro registro;
         Cliente cliente = null;
-        System.out.println(dados.codigo());
-        var buscaPorta = portaRepository.findById(dados.porta());
-        var buscaCliente = clienteRepository.findByCodigo(dados.codigo());
-        cliente = buscaCliente.orElseGet(() -> {
-            return new Cliente(null, "Nome", dados.codigo(), buscaPorta.get(), null);
-        });
-        var buscaOlt = oltRepository.findById(dados.olt()).get();
-        var buscaCto = ctoRepository.findById(dados.cto()).get();
         var equipeTecnica = equipeTecnicaRepository.findById(dados.tecnico()).get();
-        var registro = new Registro(null, cliente, buscaOlt, buscaCto, buscaPorta.get(), equipeTecnica, dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
 
+        if (dados.olt() == null) {
+            registro = new Registro(null, null, null, null, null, equipeTecnica, dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
+        }else{
+            var buscaPorta = portaRepository.findById(dados.porta());
+            var buscaCliente = clienteRepository.findByCodigo(dados.codigo());
+            cliente = buscaCliente.orElseGet(() -> {
+                return new Cliente(null, null, dados.codigo(), null, null);
+            });
+            var porta = buscaPorta.get();
+            porta.setClientes(cliente);
+            var buscaOlt = oltRepository.findById(dados.olt());
+            var buscaCto = ctoRepository.findById(dados.cto());
+            registro = new Registro(null, cliente, buscaOlt.get(), buscaCto.get(), buscaPorta.get(), equipeTecnica, dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
+        }
         registroRepository.save(registro);
 
         return ResponseEntity.ok().build();

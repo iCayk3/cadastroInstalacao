@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PortaRepository extends JpaRepository<Porta, Long> {
-    @Query("SELECT p FROM Porta p LEFT JOIN FETCH p.clientes WHERE p.cto.id = :ctoId")
+    @Query("SELECT p FROM Porta p LEFT JOIN FETCH p.clientes WHERE p.cto.id = :ctoId ORDER BY p.porta")
     List<Porta> findPortasByCtoIdWithClientes(@Param("ctoId") Long ctoId);
 }

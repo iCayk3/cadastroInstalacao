@@ -20,7 +20,8 @@ public class Porta {
     private Long id;
     private Integer porta;
 
-    @OneToOne(mappedBy = "portaCliente", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     private Cliente clientes;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -155,7 +155,6 @@ const Formulario = ({ onFormSubmit }) => {
               <select
                 value={olt}
                 onChange={(e) => setOlt(e.target.value)}
-                required
               >
                 <option value="">Selecione a OLT</option>
                 {data.map((item) => (
@@ -175,7 +174,6 @@ const Formulario = ({ onFormSubmit }) => {
               <select
                 value={cto}
                 onChange={(e) => setCto(e.target.value)}
-                required
               >
                 <option value="">Selecione a CTO</option>
 
@@ -196,13 +194,12 @@ const Formulario = ({ onFormSubmit }) => {
               <select
                 value={porta.idPorta}
                 onChange={(e) => setPorta(e.target.value)}
-                required
               >
                 <option value={porta}>Selecione a Porta</option>
 
                 {dataApiPorta.map((item) => (
                   <option key={item.idPorta} value={item.idPorta}>
-                    {item.idPorta +" " + item.numeroPorta + ": " + item.codigo} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
+                    {item.numeroPorta + ": " + item.codigo} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
                   </option>
                 ))}
               </select>

@@ -23,8 +23,7 @@ public class Cliente {
     private String nome;
     @Column(unique = true)
     private Integer codigo;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "porta_id", referencedColumnName = "id")
+    @OneToOne( mappedBy = "clientes", cascade = CascadeType.ALL)
     private Porta portaCliente;
 
     @OneToMany(mappedBy = "cliente")

@@ -49,13 +49,7 @@ public class RegistroController {
 
     @GetMapping
     public ResponseEntity<List<RegistroDTO>> listarRegistro(){
-        var registros = registroRepository.findTop5ByOrderByIdDesc().stream().map(r -> {
-                return new RegistroDTO(r.getCliente().getCodigo(), r.getOlt().getNome(), r.getCtoRegistro().getNomeCto(),
-                        r.getPorta().getPorta(), r.getEquipeTecnica().getNomeEquipe(), r.getData().toLocalDate(), r.getProcedimento().toString(),
-                        r.getCtoAntiga(), r.getLocalidade().toUpperCase());
-
-        }).toList();
-
+        var registros = registroRepository.findTop5ByOrderByIdDesc().stream().map(RegistroDTO::new).toList();
         return ResponseEntity.ok(registros);
     }
 

@@ -12,6 +12,7 @@ import br.com.w4solution.controle_instalacao.repository.olt.CtoRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.OltRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.PortaRepository;
 import br.com.w4solution.controle_instalacao.repository.registro.RegistroRepository;
+import br.com.w4solution.controle_instalacao.services.ValidacoesRegistro;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,6 +48,9 @@ public class RegistroController {
 
     @Autowired
     CtoRepository ctoRepository;
+
+    @Autowired
+    ValidacoesRegistro validacoesRegistro;
 
     @GetMapping
     public ResponseEntity<List<RegistroDTO>> listarRegistro(){
@@ -90,27 +95,14 @@ public class RegistroController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<RegistroDTO> cadastroRegistro(@RequestBody CadastroRegistroDTO dados){
-        Registro registro;
-        Cliente cliente = null;
-        var equipeTecnica = equipeTecnicaRepository.findById(dados.tecnico()).get();
+    public ResponseEntity<RegistroDTO> cadastroRegistro(@RequestBody CadastroRegistroDTO dados, UriComponentsBuilder uri){
 
-        if (dados.olt() == null) {
-            registro = new Registro(null, null, null, null, null, equipeTecnica, dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
-        }else{
-            var buscaPorta = portaRepository.findById(dados.porta());
-            var buscaCliente = clienteRepository.findByCodigo(dados.codigo());
-            cliente = buscaCliente.orElseGet(() -> {
-                return new Cliente(null, null, dados.codigo(), null, null);
-            });
-            var porta = buscaPorta.get();
-            porta.setClientes(cliente);
-            var buscaOlt = oltRepository.findById(dados.olt());
-            var buscaCto = ctoRepository.findById(dados.cto());
-            registro = new Registro(null, cliente, buscaOlt.get(), buscaCto.get(), buscaPorta.get(), equipeTecnica, dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
-        }
+        var registro = validacoesRegistro.validacoesRegistro(dados);
         registroRepository.save(registro);
 
-        return ResponseEntity.ok().build();
+        var uriRegistro = uri.path("/{id}").buildAndExpand(registro.getId()).toUri();
+
+        return ResponseEntity.created(uriRegistro).body(new RegistroDTO(registro));
+
     }
 }

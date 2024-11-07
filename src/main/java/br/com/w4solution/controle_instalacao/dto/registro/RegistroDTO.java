@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Getter
 @Setter
 public class RegistroDTO{
@@ -35,7 +37,7 @@ public class RegistroDTO{
        this.data = dados.getData().toLocalDate();
        this.procedimento = dados.getProcedimento().toString();
        this.ctoAntiga = dados.getCtoAntiga();
-       this.localidade = dados.getLocalidade();
+       this.localidade = dados.getLocalidade().toUpperCase();
    }
 
 }

@@ -20,8 +20,7 @@ public class Porta {
     private Long id;
     private Integer porta;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cliente_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "portaCliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Cliente clientes;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -34,6 +33,10 @@ public class Porta {
     public Porta(Porta p, Cto cto) {
         this.porta = p.porta;
         this.cto = cto;
+    }
+
+    public void atualizaCliente(Cliente cliente){
+        this.clientes = cliente;
     }
 
     @Override

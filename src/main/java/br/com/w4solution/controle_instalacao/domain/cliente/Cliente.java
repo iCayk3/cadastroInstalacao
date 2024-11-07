@@ -23,11 +23,16 @@ public class Cliente {
     private String nome;
     @Column(unique = true)
     private Integer codigo;
-    @OneToOne( mappedBy = "clientes", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "porta_id", referencedColumnName = "id")
     private Porta portaCliente;
 
     @OneToMany(mappedBy = "cliente")
     private List<Registro> registros;
+
+    public Cliente(Integer codigo){
+        this.codigo = codigo;
+    }
 
     public void atualizarCliente(String nome, Porta porta){
         if(nome != null){

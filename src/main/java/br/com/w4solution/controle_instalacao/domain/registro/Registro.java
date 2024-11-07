@@ -52,6 +52,14 @@ public class Registro {
         this.porta = porta;
     }
 
+    public Registro(Cliente cliente, EquipeTecnica equipeTecnica, String data, Procedimento procedimento, String ctoAntiga, String localidade) {
+        this.cliente = cliente;
+        this.equipeTecnica = equipeTecnica;
+        this.data = converterParaData(data);
+        this.procedimento = procedimento;
+        this.ctoAntiga = ctoAntiga;
+        this.localidade = localidade;
+    }
 
     private LocalDateTime converterParaData(String data){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

@@ -28,10 +28,11 @@ const Formulario = ({ onFormSubmit }) => {
   const [dataApiPorta, setDataApiPorta] = useState([]);
   const [loadingPorta, setLoadingPorta] = useState(false);
   const [errorPorta, setErrorPorta] = useState(null);
+  const today = new Date();
 
   useEffect(() => {
-    // Define a dataregistro atual no formato YYYY-MM-DD ao carregar o componente
     const today = new Date();
+    // Define a dataregistro atual no formato YYYY-MM-DD ao carregar o componente    
     setData(today.toISOString().slice(0, 10)); // Formato YYYY-MM-DD
   }, []);
 
@@ -122,7 +123,7 @@ const Formulario = ({ onFormSubmit }) => {
       setCto('');
       setPorta('');
       setTecnico('');
-      setData('');
+      setData(setData(today.toISOString().slice(0, 10)));
       setProcedimento('');
       setCtoAntiga('');
       setLocalidade('');
@@ -195,7 +196,7 @@ const Formulario = ({ onFormSubmit }) => {
                 value={porta.idPorta}
                 onChange={(e) => setPorta(e.target.value)}
               >
-                <option value={porta}>Selecione a Porta</option>
+                <option value="">Selecione a Porta</option>
 
                 {dataApiPorta.map((item) => (
                   <option key={item.idPorta} value={item.idPorta}>
@@ -212,11 +213,11 @@ const Formulario = ({ onFormSubmit }) => {
             {errorTecnico && <p>Erro: {errorPorta}</p>}
             {dataApiTecnico && (
               <select
-                value={tecnico.id}
+                value={tecnico}
                 onChange={(e) => setTecnico(e.target.value)}
                 required
               >
-                <option value={tecnico}>Selecione a equipe técnica</option>
+                <option value="">Selecione a equipe técnica</option>
 
                 {dataApiTecnico.map((item) => (
                   <option key={item.id} value={item.id}>

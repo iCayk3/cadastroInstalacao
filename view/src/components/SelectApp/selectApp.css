@@ -1,0 +1,16 @@
+.select-app {
+    margin-bottom: 15px;
+}
+
+.select-app label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.select-app select {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Setter
 public class RegistroDTO{
-
+   private Long id;
    private Integer codigo;
    private String nomeOlt = "";
    private String nomeCto = "";
@@ -23,6 +23,7 @@ public class RegistroDTO{
    private String localidade;
 
    public RegistroDTO(Registro dados){
+       this.id = dados.getId();
        this.codigo = dados.getCliente().getCodigo();
        if(dados.getOlt() !=null){
            this.nomeOlt = dados.getOlt().getNome();

@@ -1,0 +1,11 @@
+.menu {
+    
+}
+
+.head {
+    display: flex;
+    justify-content: space-around;
+    height: 6em;
+    background-color: #14c3a2;
+    align-items: center;
+}

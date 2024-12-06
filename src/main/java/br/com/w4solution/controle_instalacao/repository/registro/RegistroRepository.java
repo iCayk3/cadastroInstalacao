@@ -2,6 +2,9 @@ package br.com.w4solution.controle_instalacao.repository.registro;
 
 import br.com.w4solution.controle_instalacao.domain.registro.Procedimento;
 import br.com.w4solution.controle_instalacao.domain.registro.Registro;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Range;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,4 +23,6 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
             "GROUP BY EXTRACT(MONTH FROM r.data), EXTRACT(YEAR FROM r.data) " +
             "ORDER BY COUNT(r) DESC")
     Integer buscarResumoMensal(Procedimento procedimento, Integer mes, Integer ano);
+
+    Page<Registro> findAllByOrderByIdDesc(Pageable pageable);
 }

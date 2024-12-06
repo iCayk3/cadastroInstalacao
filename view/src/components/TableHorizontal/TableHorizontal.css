@@ -1,4 +1,5 @@
 .table-container {
+    
     margin-top: 30px;
     background-color: white;
     padding: 15px;
@@ -7,16 +8,17 @@
     box-sizing: border-box;
   }
   
-.table-container  table {
+.table-container  table, input {
+    box-sizing: border-box  ;
     width: 100%;
     border-collapse: collapse;
   }
   
-.table-container  table, th, td {
+.table-container  table, th, td, input {
     border: 1px solid #ddd;
   }
   
-.table-container th, td {
+.table-container th, td, input {
     padding: 10px;
     text-align: left;
   }
@@ -24,4 +26,18 @@
 .table-container  th {
     background-color: #f2f2f2;
   }
-  
+.editar {
+  text-align: center;
+  cursor: pointer;
+}
+.editar-ed {
+  text-align: center;
+}
+
+.editar-ed svg {
+  margin: 0 4px;
+}
+
+.tableLine {
+  box-sizing: border-box;
+}

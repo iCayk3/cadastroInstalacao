@@ -1,0 +1,28 @@
+.main {
+    margin: 0 4%;
+    width: 90%;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 80% 20%;
+    /* 2 colunas na primeira linha */
+    grid-auto-rows: auto;
+    /* Altura automática para as linhas */
+    gap: 20px;
+    /* Espaçamento entre os itens */
+    box-sizing: border-box;
+}
+
+
+.grid-item:nth-child(0){
+    grid-column: span 2;
+    /* Item 3 ocupa as 2 colunas */
+}
+
+.grid-item {
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}

@@ -53,6 +53,7 @@ public class OltController {
     @GetMapping("/cto/{id}/portas")
     public ResponseEntity<List<PortaDTO>> listarPortas(@PathVariable Long id){
         var portas = repositoryPorta.findPortasByCtoIdWithClientes(id);
+
         var portasEncontrada = portas.stream().map(p -> {
             if(p.getClientes() != null){
                 return new PortaDTO(p.getId(), p.getPorta(), p.getClientes().getCodigo());
@@ -60,6 +61,7 @@ public class OltController {
                 return new PortaDTO(p.getId(), p.getPorta(), null);
             }
         }).toList();
+
         return ResponseEntity.ok(portasEncontrada);
     }
 
@@ -82,7 +84,9 @@ public class OltController {
         List<Porta> portas = null;
         var portasDados = dados.portas();
         var cto = new Cto(null, dados.nomeCto(), null, olt.get(), null);
+
         portas = portasDados.stream().map(p -> new Porta(p, cto)).collect(Collectors.toList());
+
         portas.forEach(System.out::println);
 
         cto.setPortas(portas);

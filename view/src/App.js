@@ -1,13 +1,18 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import Header from './components/Header';
-import Main from './components/Main';
+import Inicio from "./Paginas/Inicio"
+import Overview from './Paginas/Overview';
+import Menu from './components/Menu';
 
 function App() {
   return (
-    <div className="App">
-        <Header />
-        <Main />
-    </div>
+    <BrowserRouter>
+      <Menu/>
+      <Routes>
+        <Route path='/' element={<Inicio />}/>
+        <Route path='/overview' element={<Overview/>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -58,6 +58,12 @@ public class RegistroController {
         return ResponseEntity.ok(registros);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<Page<RegistroDTO>> listarTodosRegistros(@PageableDefault(size = 15) Pageable pageable, @RequestParam(required = false) String parametros){
+        var registros = registroRepository.findAllByOrderByIdDesc(pageable).map(RegistroDTO::new);
+        return ResponseEntity.ok().body(registros);
+    }
+
     @GetMapping("/servicos/mensais/resumo")
     public ResponseEntity<ResumoServicoMensalDTO> listarResumoMensal(){
         var resumoReativacao = registroRepository.buscarResumoMensal(Procedimento.REATIVACAO, LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());

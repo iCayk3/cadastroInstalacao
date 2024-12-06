@@ -1,22 +1,18 @@
-DO
-$$
-DECLARE
-    cto_id INT;   -- Variável para armazenar o ID da CTO recém-inserida
-    i INT;        -- Variável para o loop externo (número de CTOs)
-    j INT;        -- Variável para o loop interno (número de portas)
-BEGIN
-    -- Loop para adicionar 200 CTOs
-    FOR i IN 1..10 LOOP
-        -- Inserir uma nova CTO
-        INSERT INTO CTO (nome_cto, olt_id)
-        VALUES ('CTO-SJP' || i, 1)
-        RETURNING id INTO cto_id;  -- Armazena o ID da nova CTO em cto_id
-
-        -- Loop para adicionar 16 portas para cada CTO
-        FOR j IN 1..16 LOOP
-            INSERT INTO porta (cto_id, porta)
-            VALUES (cto_id, j);
-        END LOOP;
-    END LOOP;
-END;
-$$;
+	DO
+	$$
+	DECLARE
+	    cto_id INT;   
+	    i INT;        
+	    j INT;        
+	BEGIN
+	    FOR i IN 1..6 LOOP       
+	        INSERT INTO CTOS (nome_cto, olt_id)
+	        VALUES ('CTO BUCU ' || i, 7)
+	        RETURNING id INTO cto_id;
+	        FOR j IN 1..16 LOOP
+	            INSERT INTO portas (cto_id, porta)
+	            VALUES (cto_id, j);
+	        END LOOP;
+	    END LOOP;
+	END;
+	$$;

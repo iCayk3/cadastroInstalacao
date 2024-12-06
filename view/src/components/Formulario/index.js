@@ -1,15 +1,10 @@
 
 import './Formulario.css'
 import React, { useEffect, useState } from 'react';
-import useFetch from '../../Services/useFetch';
-import useFetchTecnico from '../../Services/useFetchTecnico';
+import SelectApp from '../SelectApp';
+import InputTextApp from '../InputTextApp';
 
 const Formulario = ({ onFormSubmit }) => {
-
-  const { data, loading, error } = useFetch('http://localhost:8080/olt');
-  
-  const { dataApiTecnico, loadingTecnico, errorTecnico } = useFetchTecnico(`http://localhost:8080/tecnico/equipes`);
-
 
 
   // Estados para armazenar os valores dos campos
@@ -22,65 +17,43 @@ const Formulario = ({ onFormSubmit }) => {
   const [procedimento, setProcedimento] = useState('');
   const [ctoAntiga, setCtoAntiga] = useState('');
   const [localidade, setLocalidade] = useState('');
-  const [dataApiCto, setDataApiCto] = useState([]);
-  const [loadingCto, setLoadingCto] = useState(false);
-  const [errorCto, setErrorCto] = useState(null);
-  const [dataApiPorta, setDataApiPorta] = useState([]);
-  const [loadingPorta, setLoadingPorta] = useState(false);
-  const [errorPorta, setErrorPorta] = useState(null);
   const today = new Date();
+
+  const selectOlt = (id) => {
+    setOlt(id); // Atualiza o estado com o ID selecionado
+    console.log(olt); // Exemplo de uso// Exemplo de uso
+
+  };
+  const selectCto = (id) => {
+    setCto(id); // Atualiza o estado com o ID selecionado
+    console.log("ID selecionado:", id); // Exemplo de uso
+  };
+
+  const selectPorta = (id) => {
+    setPorta(id);
+  };
+
+  const selectTecnico = (id) => {
+    setTecnico(id)
+  }
+
+  const selectCodigo = (item) => {
+    setCodigo(item)
+  }
+
+  const selectCtoAntiga = (item) => {
+    setCtoAntiga(item)
+  }
+
+  const selectLocalidade = (item) => {
+    setLocalidade(item)
+  }
 
   useEffect(() => {
     const today = new Date();
     // Define a dataregistro atual no formato YYYY-MM-DD ao carregar o componente    
     setData(today.toISOString().slice(0, 10)); // Formato YYYY-MM-DD
   }, []);
-
-  useEffect(() => {
-    if (olt) {
-      const fetchCto = async () => {
-        setLoadingCto(true);
-        setErrorCto(null);
-        try {
-          const response = await fetch(`http://localhost:8080/olt/${olt}/cto`);
-          if (!response.ok) throw new Error('Erro ao carregar CTO');
-          const data = await response.json();
-          setDataApiCto(data);
-        } catch (error) {
-          setErrorCto(error.message);
-        } finally {
-          setLoadingCto(false);
-        }
-      };
-      fetchCto();
-    } else {
-      // Reseta as CTOs quando nenhuma OLT é selecionada
-      setDataApiCto([]);
-    }
-  }, [olt]);
-
-  useEffect(() => {
-    if (cto) {
-      const fetchCto = async () => {
-        setLoadingPorta(true);
-        setErrorPorta(null);
-        try {
-          const response = await fetch(`http://localhost:8080/olt/cto/${cto}/portas`);
-          if (!response.ok) throw new Error('Erro ao carregar CTO');
-          const data = await response.json();
-          setDataApiPorta(data);
-        } catch (error) {
-          setErrorPorta(error.message);
-        } finally {
-          setLoadingPorta(false);
-        }
-      };
-      fetchCto();
-    } else {
-      // Reseta as CTOs quando nenhuma OLT é selecionada
-      setDataApiPorta([]);
-    }
-  }, [cto]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Impede o comportamento padrão do formulário
@@ -118,15 +91,15 @@ const Formulario = ({ onFormSubmit }) => {
       console.log('Dados enviados com sucesso:', result);
 
       // Opcional: Resetar o formulário após o envio bem-sucedido
-      setCodigo('');
-      setOlt('');
-      setCto('');
-      setPorta('');
-      setTecnico('');
-      setData(setData(today.toISOString().slice(0, 10)));
+      selectCodigo('');
+      selectOlt('');
+      selectCto('');
+      selectPorta('');
+      selectTecnico('');
+      setData(today.toISOString().slice(0, 10));
       setProcedimento('');
-      setCtoAntiga('');
-      setLocalidade('');
+      selectCtoAntiga('');
+      selectLocalidade('');
 
     } catch (error) {
       console.error('Erro na requisição:', error);
@@ -138,95 +111,12 @@ const Formulario = ({ onFormSubmit }) => {
     <div className="form-container">
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
-          <div className="form-group">
-            <label>Código:</label>
-            <input
-              type="text"
-              value={codigo}
-              onChange={(e) => setCodigo(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>OLT:</label>
+          <InputTextApp label="CÓDIGO" onSelectChange={selectCodigo} valor={codigo} obrigatorio={true} />
+          <SelectApp label="OLT" uri="http://localhost:8080/olt" onSelectChange={selectOlt} valor={olt} />
+          {olt && <SelectApp label="CTO" uri={`http://localhost:8080/olt/${olt}/cto`} onSelectChange={selectCto} valor={cto} />}
+          {cto && <SelectApp label="PORTA" uri={`http://localhost:8080/olt/cto/${cto}/portas`} onSelectChange={selectPorta} valor={porta} />}
+          <SelectApp label="TÉCNICO" uri="http://localhost:8080/tecnico/equipes" onSelectChange={selectTecnico} valor={tecnico} />
 
-            {loading && <p>Carregando...</p>}
-            {error && <p>Erro: {error}</p>}
-            {data && (
-              <select
-                value={olt}
-                onChange={(e) => setOlt(e.target.value)}
-              >
-                <option value="">Selecione a OLT</option>
-                {data.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.nome} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
-          <div className="form-group">
-            <label>CTO:</label>
-
-            {loadingCto && <p>Carregando...</p>}
-            {errorCto && <p>Erro: {errorCto}</p>}
-            {dataApiCto && (
-              <select
-                value={cto}
-                onChange={(e) => setCto(e.target.value)}
-              >
-                <option value="">Selecione a CTO</option>
-
-                {dataApiCto.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.nomeCto} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
-          <div className="form-group">
-            <label>Porta:</label>
-
-            {loadingPorta && <p>Carregando...</p>}
-            {errorPorta && <p>Erro: {errorPorta}</p>}
-            {dataApiPorta && (
-              <select
-                value={porta.idPorta}
-                onChange={(e) => setPorta(e.target.value)}
-              >
-                <option value="">Selecione a Porta</option>
-
-                {dataApiPorta.map((item) => (
-                  <option key={item.idPorta} value={item.idPorta}>
-                    {item.numeroPorta + ": " + item.codigo} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
-
-          <div className="form-group">
-            <label>Técnico:</label>
-            {loadingTecnico && <p>Carregando...</p>}
-            {errorTecnico && <p>Erro: {errorPorta}</p>}
-            {dataApiTecnico && (
-              <select
-                value={tecnico}
-                onChange={(e) => setTecnico(e.target.value)}
-                required
-              >
-                <option value="">Selecione a equipe técnica</option>
-
-                {dataApiTecnico.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.nomeEquipe} {/* A propriedade `nome` é um exemplo; ajuste conforme sua API */}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
           <div className="form-group">
             <label>Data:</label>
             <input
@@ -245,7 +135,7 @@ const Formulario = ({ onFormSubmit }) => {
               onChange={(e) => setProcedimento(e.target.value)}
               required
             >
-              <option value="">Selecione o Técnico</option>
+              <option value="">Selecione o procedimento</option>
               <option value="INSTALACAO">INSTALAÇÃO</option>
               <option value="MUDANCA_ENDERECO">MUDANCA DE ENDEREÇO</option>
               <option value="REPARO">REPARO</option>
@@ -255,23 +145,8 @@ const Formulario = ({ onFormSubmit }) => {
               <option value="MIGRACAO">MIGRAÇÃO</option>
             </select>
           </div>
-          <div className="form-group">
-            <label>CTO Antiga:</label>
-            <input
-              type="text"
-              value={ctoAntiga}
-              onChange={(e) => setCtoAntiga(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label>Localidade:</label>
-            <input
-              type="text"
-              value={localidade}
-              onChange={(e) => setLocalidade(e.target.value)}
-              required
-            />
-          </div>
+          <InputTextApp label="CTO antiga" onSelectChange={selectCtoAntiga} valor={ctoAntiga} obrigatorio={false} />
+          <InputTextApp label="Localidade" onSelectChange={selectLocalidade} valor={localidade} obrigatorio={true} />
         </div>
         <button type="submit" className="submit-button">Cadastrar</button>
       </form>

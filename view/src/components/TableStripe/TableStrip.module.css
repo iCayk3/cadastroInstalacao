@@ -1,0 +1,6 @@
+.tableStrip tr:hover{
+    background-color: blueviolet;
+    font-size: 16px;
+    transition: 200ms;
+    text-align: center;
+}

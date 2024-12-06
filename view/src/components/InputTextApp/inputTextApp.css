@@ -1,0 +1,16 @@
+.finput-text-app {
+    margin-bottom: 15px;
+}
+  
+.input-text-app label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+  
+.input-text-app input{
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

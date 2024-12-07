@@ -2,6 +2,7 @@ package br.com.w4solution.controle_instalacao.repository.registro;
 
 import br.com.w4solution.controle_instalacao.domain.registro.Procedimento;
 import br.com.w4solution.controle_instalacao.domain.registro.Registro;
+import br.com.w4solution.controle_instalacao.domain.tecnico.EquipeTecnica;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Range;
@@ -24,5 +25,13 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
             "ORDER BY COUNT(r) DESC")
     Integer buscarResumoMensal(Procedimento procedimento, Integer mes, Integer ano);
 
+
     Page<Registro> findAllByOrderByIdDesc(Pageable pageable);
+    @Query("SELECT r.procedimento, COUNT(r) " +
+            "FROM Registro r " +
+            "WHERE r.equipeTecnica.id = :equipeTecnicaId " +
+            "AND EXTRACT(MONTH FROM r.data) = :mes " +
+            "AND EXTRACT(YEAR FROM r.data) = :ano " +
+            "GROUP BY r.procedimento")
+    List<Object[]> EncontrarRegistroMensalPorTecnico(Long equipeTecnicaId, int mes, int ano);
 }

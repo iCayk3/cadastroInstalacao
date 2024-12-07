@@ -1,11 +1,7 @@
 package br.com.w4solution.controle_instalacao.controller;
 
-import br.com.w4solution.controle_instalacao.domain.cliente.Cliente;
 import br.com.w4solution.controle_instalacao.domain.registro.Procedimento;
-import br.com.w4solution.controle_instalacao.domain.registro.Registro;
-import br.com.w4solution.controle_instalacao.dto.registro.CadastroRegistroDTO;
-import br.com.w4solution.controle_instalacao.dto.registro.RegistroDTO;
-import br.com.w4solution.controle_instalacao.dto.registro.ResumoServicoMensalDTO;
+import br.com.w4solution.controle_instalacao.dto.registro.*;
 import br.com.w4solution.controle_instalacao.repository.cliente.ClienteRepository;
 import br.com.w4solution.controle_instalacao.repository.equipeTecnica.EquipeTecnicaRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.CtoRepository;
@@ -23,9 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("registros")
@@ -56,6 +51,29 @@ public class RegistroController {
     public ResponseEntity<List<RegistroDTO>> listarRegistro(){
         var registros = registroRepository.findTop5ByOrderByIdDesc().stream().map(RegistroDTO::new).toList();
         return ResponseEntity.ok(registros);
+    }
+
+    @GetMapping("/servicos/tecnicos/mensal/resumo")
+    public ResponseEntity<ServicosPorEquipeMensal> listarServicosPorEquipe(){
+        var equipes = equipeTecnicaRepository.findAll();
+        var servicos  = registroRepository.EncontrarRegistroMensalPorTecnico(equipes.get(0).getId(), LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+
+        for (Object[] resultado : servicos) {
+            System.out.println("Procedimento: " + resultado[0] + ", Quantidade: " + resultado[1]);
+        }
+
+        var variavel = equipes.stream().map(e -> {
+            var resultados  = registroRepository.EncontrarRegistroMensalPorTecnico(equipes.get(0).getId(), LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+            List<ServicosEquipe> servicos2 = new ArrayList<>();
+            for (Object[] resultado : resultados) {
+                servicos2.add(new ServicosEquipe((String) resultado[0], (Integer) resultado[1]));
+                System.out.println("Procedimento: " + resultado[0] + ", Quantidade: " + resultado[1]);
+            }
+            return new ServicosPorEquipeMensal(e.getNomeEquipe(), servicos2);}
+        );
+
+        variavel.forEach(System.out::println);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/all")

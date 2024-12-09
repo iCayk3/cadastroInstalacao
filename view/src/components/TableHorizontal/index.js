@@ -10,43 +10,12 @@ const TableHorizontal = ({ data, loading, error, aoSalvar }) => {
 
   const [editRowId, setEditRowId] = useState(null);
   const [formData, setFormData] = useState({}); 
-
-  const [codigo, setCodigo] = useState('');
-  const [cto, setCto] = useState('');
-  const [porta, setPorta] = useState('');
   const [olt, setOlt] = useState('');
-  const [tecnico, setTecnico] = useState('');
-  const [dataregistro, setData] = useState('');
-  const [procedimento, setProcedimento] = useState('');
-  const [ctoAntiga, setCtoAntiga] = useState('');
-  const [localidade, setLocalidade] = useState('');
 
   const selectOlt = (id) => {
     setOlt(id); 
   };
-  const selectCto = (id) => {
-    setCto(id); 
-  };
 
-  const selectPorta = (id) => {
-    setPorta(id);
-  };
-
-  const selectTecnico = (id) => {
-    setTecnico(id)
-  }
-
-  const selectCodigo = (item) => {
-    setCodigo(item)
-  }
-
-  const selectCtoAntiga = (item) => {
-    setCtoAntiga(item)
-  }
-
-  const selectLocalidade = (item) => {
-    setLocalidade(item)
-  }
 
 
   const handleEditClick = (row) => {

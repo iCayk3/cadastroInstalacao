@@ -9,7 +9,7 @@ const Main = () => {
     const [refreshTable, setRefreshTable] = useState(false);
 
     // Custom hook de fetch que recarrega ao mudar `refreshTable`
-    const { data, loading, error } = useFetch(`http://localhost:8080/registros?refresh=${refreshTable}`);
+    const { data, loading, error } = useFetch(`http://localhost:8080/registros/top5?refresh=${refreshTable}`);
     const editarRegistro = (id) => {
         console.log(id)
     }

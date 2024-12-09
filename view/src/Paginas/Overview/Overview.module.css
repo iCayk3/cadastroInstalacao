@@ -14,12 +14,12 @@
 }
 
 
-.grid-item:nth-child(0){
+.gridItem:nth-child(3){
     grid-column: span 2;
     /* Item 3 ocupa as 2 colunas */
 }
 
-.grid-item {
+.gridItem {
     background-color: #f2f2f2;
     padding: 20px;
     text-align: center;

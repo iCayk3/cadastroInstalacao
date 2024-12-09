@@ -26,7 +26,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
     Integer buscarResumoMensal(Procedimento procedimento, Integer mes, Integer ano);
 
 
-    Page<Registro> findAllByOrderByIdDesc(Pageable pageable);
+    List<Registro> findAllByOrderByIdDesc();
     @Query("SELECT r.procedimento, COUNT(r) " +
             "FROM Registro r " +
             "WHERE r.equipeTecnica.id = :equipeTecnicaId " +

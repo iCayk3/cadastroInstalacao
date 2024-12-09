@@ -49,36 +49,32 @@ public class RegistroController {
 
     @GetMapping
     public ResponseEntity<List<RegistroDTO>> listarRegistro(){
-        var registros = registroRepository.findTop5ByOrderByIdDesc().stream().map(RegistroDTO::new).toList();
+        var registros = registroRepository.findAllByOrderByIdDesc().stream().map(RegistroDTO::new).toList();
         return ResponseEntity.ok(registros);
     }
 
     @GetMapping("/servicos/tecnicos/mensal/resumo")
-    public ResponseEntity<ServicosPorEquipeMensal> listarServicosPorEquipe(){
+    public ResponseEntity<List<ServicosPorEquipeMensal>> listarServicosPorEquipe(){
         var equipes = equipeTecnicaRepository.findAll();
         var servicos  = registroRepository.EncontrarRegistroMensalPorTecnico(equipes.get(0).getId(), LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
 
-        for (Object[] resultado : servicos) {
-            System.out.println("Procedimento: " + resultado[0] + ", Quantidade: " + resultado[1]);
-        }
-
         var variavel = equipes.stream().map(e -> {
-            var resultados  = registroRepository.EncontrarRegistroMensalPorTecnico(equipes.get(0).getId(), LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+            var resultados  = registroRepository.EncontrarRegistroMensalPorTecnico(e.getId(), LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
             List<ServicosEquipe> servicos2 = new ArrayList<>();
             for (Object[] resultado : resultados) {
-                servicos2.add(new ServicosEquipe((String) resultado[0], (Integer) resultado[1]));
-                System.out.println("Procedimento: " + resultado[0] + ", Quantidade: " + resultado[1]);
+                Procedimento procedimento = (Procedimento) resultado[0];
+                Long quantidade = (Long) resultado[1];
+                servicos2.add(new ServicosEquipe(procedimento.toString(), quantidade));
             }
-            return new ServicosPorEquipeMensal(e.getNomeEquipe(), servicos2);}
-        );
+            return new ServicosPorEquipeMensal(e.getNomeEquipe(), servicos2);
+        }).toList();
 
-        variavel.forEach(System.out::println);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(variavel);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<Page<RegistroDTO>> listarTodosRegistros(@PageableDefault(size = 15) Pageable pageable, @RequestParam(required = false) String parametros){
-        var registros = registroRepository.findAllByOrderByIdDesc(pageable).map(RegistroDTO::new);
+    @GetMapping("/top5")
+    public ResponseEntity<List<RegistroDTO>> listarTodosRegistros(){
+        var registros = registroRepository.findTop5ByOrderByIdDesc().stream().map(RegistroDTO::new).toList();
         return ResponseEntity.ok().body(registros);
     }
 

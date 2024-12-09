@@ -9,13 +9,14 @@
   }
 
  .tablecomponent th, td {
-    border: 1px solid #ddd;
+    border-radius: 8px;
+    border: 1px solid #dbe9ff;
     padding: 8px;
     text-align: left;
   }
   
  .tablecomponent th {
-    background-color: #c6e8c3;
+    background-color: #7192ff;
   }
   
  .tablecomponent td {

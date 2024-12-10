@@ -34,4 +34,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Long> {
             "AND EXTRACT(YEAR FROM r.data) = :ano " +
             "GROUP BY r.procedimento")
     List<Object[]> EncontrarRegistroMensalPorTecnico(Long equipeTecnicaId, int mes, int ano);
+
+    @Query("SELECT r FROM Registro r  WHERE r.equipeTecnica.id = :equipeTecnicaId")
+    List<Registro> encontrarRegistroPorEquipe(Long equipeTecnicaId);
 }

@@ -26,7 +26,7 @@ const SelectApp = ({ label, uri, onSelectChange, valor }) => {
 
                     {data.map((item) => (
                         <option key={item.id} value={item.id}>
-                            {item.codigo ? `${item.nome}: ${item.codigo}` : item.nome}
+                            {item.codigo ? `${item.label}: ${item.codigo}` : item.label}
                         </option>
                     ))}
                 </select>

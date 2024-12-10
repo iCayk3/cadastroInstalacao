@@ -48,13 +48,18 @@ public class RegistroController {
     ValidacoesRegistro validacoesRegistro;
 
     @GetMapping
-    public ResponseEntity<List<RegistroDTO>> listarRegistro(){
+    public ResponseEntity<List<RegistroDTO>> listarRegistro(@RequestParam(required = false) Long equipe){
+        if(equipe != null){
+            var registroPorEquipe = registroRepository.encontrarRegistroPorEquipe(equipe).stream().map(RegistroDTO::new).toList();
+            return ResponseEntity.ok().body(registroPorEquipe);
+        }
         var registros = registroRepository.findAllByOrderByIdDesc().stream().map(RegistroDTO::new).toList();
         return ResponseEntity.ok(registros);
     }
 
     @GetMapping("/servicos/tecnicos/mensal/resumo")
     public ResponseEntity<List<ServicosPorEquipeMensal>> listarServicosPorEquipe(){
+
         var equipes = equipeTecnicaRepository.findAll();
         var servicos  = registroRepository.EncontrarRegistroMensalPorTecnico(equipes.get(0).getId(), LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
 

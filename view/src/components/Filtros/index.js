@@ -5,15 +5,21 @@ import styles from './Filtros.module.css'
 
 
 
-export default function Filtros({aoAlteradoTecnico}) {
-
-    const [equipe, setEquipe] = useState('')
+export default function Filtros({aoAlteradoTecnico, aoAlteradoData}) {
 
     function selectEquipe(evento, value) {
         if (value === null) {
-            console.log('Campo foi limpo!');
+            aoAlteradoTecnico('')
         } else {
             aoAlteradoTecnico(value.label)
+        }
+    }
+
+    function selectData(value){
+        if (value === null) {
+            aoAlteradoData('')
+        } else {
+            aoAlteradoData(value.toISOString().slice(0, 10))
         }
     }
 
@@ -21,7 +27,7 @@ export default function Filtros({aoAlteradoTecnico}) {
         <div className={styles.filtroContainer}>
             <h3 className={styles.gridItem}>Filtros</h3>
             <div className={styles.gridItem}>
-                <BasicDatePicker />
+                <BasicDatePicker aoAlterado={(value) => selectData(value)}/>
             </div>
             <div className={styles.gridItem}>
                 <FieldAutoComplet uri="http://localhost:8080/tecnico/equipes" label={"Técnicos"} aoAlterado={(event, value) => selectEquipe(event, value)} />

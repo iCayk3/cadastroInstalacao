@@ -26,19 +26,23 @@ export default function DataTable() {
 
   const aoAlteradoTecnico = (tecnico) => {
     if (tecnico === null) {
-      setTecnico('')
+      setTecnico(data)
     } else {
-      console.log(tecnico)
       setTecnico(tecnico)
     }
   }
 
-
-  tecnico && console.log(data.filter((item) => item.nomeEquipeTecnica === tecnico))
+  const aoAlteradoData = (dataFiltro) => {
+    if (dataFiltro === null) {
+      setDataFiltro('')
+    } else {
+      setTecnico(dataFiltro)
+    }
+  }
 
   return (
     <div>
-      <Filtros aoAlteradoTecnico={(tecnico) => aoAlteradoTecnico(tecnico)}/>
+      <Filtros aoAlteradoTecnico={(tecnico) => aoAlteradoTecnico(tecnico)} aoAlteradoData={(data) => aoAlteradoData(data)}/>
       <Paper sx={{ height: 400, width: '100%' }}>
 
         {loading && <p>Carregando</p>}
@@ -52,7 +56,16 @@ export default function DataTable() {
             sx={{ border: 0 }}
 
           />}
-        {data &&
+        {dataFiltro && <DataGrid
+            key={data.id}
+            rows={data.filter((item) => console.log(item.data, dataFiltro))}
+            columns={columns}
+            initialState={{ pagination: { paginationModel } }}
+            pageSizeOptions={[10, 15]}
+            sx={{ border: 0 }}
+
+          />}
+        {!tecnico && data &&
           <DataGrid
             key={data.id}
             rows={data}
@@ -62,7 +75,6 @@ export default function DataTable() {
             sx={{ border: 0 }}
 
           />}
-
       </Paper>
     </div >
 

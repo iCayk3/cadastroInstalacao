@@ -36,18 +36,21 @@ export default function DataTable() {
     if (dataFiltro === null) {
       setDataFiltro('')
     } else {
-      setTecnico(dataFiltro)
+      setDataFiltro(dataFiltro)
     }
   }
 
   return (
     <div>
-      <Filtros aoAlteradoTecnico={(tecnico) => aoAlteradoTecnico(tecnico)} aoAlteradoData={(data) => aoAlteradoData(data)}/>
+      <Filtros 
+        aoAlteradoTecnico={(tecnico) => aoAlteradoTecnico(tecnico)} 
+        aoAlteradoData={(data) => aoAlteradoData(data)}
+        />
       <Paper sx={{ height: 400, width: '100%' }}>
 
         {loading && <p>Carregando</p>}
         {error && <p>Erro na requisicao: {error}</p>}
-        {tecnico && <DataGrid
+        {!dataFiltro && tecnico && <DataGrid
             key={data.id}
             rows={data.filter((item) => item.nomeEquipeTecnica === tecnico)}
             columns={columns}
@@ -56,19 +59,28 @@ export default function DataTable() {
             sx={{ border: 0 }}
 
           />}
-        {dataFiltro && <DataGrid
+        {!tecnico && dataFiltro && <DataGrid
             key={data.id}
-            rows={data.filter((item) => console.log(item.data, dataFiltro))}
+            rows={data.filter((item) => item.data === dataFiltro)}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 15]}
             sx={{ border: 0 }}
 
           />}
-        {!tecnico && data &&
+        {!tecnico && !dataFiltro && data &&
           <DataGrid
             key={data.id}
             rows={data}
+            columns={columns}
+            initialState={{ pagination: { paginationModel } }}
+            pageSizeOptions={[10, 15]}
+            sx={{ border: 0 }}
+
+          />}
+          {tecnico && dataFiltro &&  <DataGrid
+            key={data.id}
+            rows={data.filter((item) => {return item.data === dataFiltro && item.nomeEquipeTecnica === tecnico})}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 15]}

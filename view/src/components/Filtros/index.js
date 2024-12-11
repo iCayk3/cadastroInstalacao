@@ -19,7 +19,12 @@ export default function Filtros({aoAlteradoTecnico, aoAlteradoData}) {
         if (value === null) {
             aoAlteradoData('')
         } else {
-            aoAlteradoData(value.toISOString().slice(0, 10))
+            try{
+                aoAlteradoData(value.toISOString().slice(0, 10))
+            }catch(e){
+                aoAlteradoData('')
+            }
+            
         }
     }
 

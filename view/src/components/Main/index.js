@@ -1,29 +1,47 @@
 import Formulario from '../Formulario'
 import TableHorizontal from '../TableHorizontal'
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import useFetch from '../../Services/useFetch';
 import './Main.css'
+import AlertApp from '../AlertApp';
 
 const Main = () => {
 
     const [refreshTable, setRefreshTable] = useState(false);
 
-    // Custom hook de fetch que recarrega ao mudar `refreshTable`
     const { data, loading, error } = useFetch(`http://localhost:8080/registros/top5?refresh=${refreshTable}`);
-    const editarRegistro = (id) => {
-        console.log(id)
-    }
     
+    const salvarEdicao = async (editRowId, formData) => {
+        try {
+            const response = await fetch(`http://localhost:8080/registros/${editRowId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData), // Converte os dados do formulário em JSON
+            });
 
-    // Função para atualizar a tabela após o submit do formulário
+            handleFormSubmit();
+
+            if (!response.ok) {
+                throw new Error('Erro ao enviar o formulário');
+            }
+
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+            <AlertApp severity={"error"} texto={"Erro ao atualizar"}/>
+            //alert('Ocorreu um erro ao enviar os dados. Tente novamente.');
+        }
+    } 
+
     const handleFormSubmit = () => {
-        setRefreshTable((prev) => !prev); // Muda o estado para forçar o recarregamento
+        setRefreshTable((prev) => !prev);
     };
 
     return (
         <main className='main'>
-            <section className='grid-item'><Formulario onFormSubmit={handleFormSubmit}/></section>
-            <section className='grid-item'><TableHorizontal data={data} loading={loading} error={error} aoEditar={editarRegistro}/></section>
+            <section className='grid-item'><Formulario onFormSubmit={handleFormSubmit} /></section>
+            <section className='grid-item'><TableHorizontal data={data} loading={loading} error={error} aoSalvar={(editRowId, formData) => salvarEdicao(editRowId, formData)} /></section>
         </main>
     )
 }

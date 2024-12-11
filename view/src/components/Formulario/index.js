@@ -20,13 +20,11 @@ const Formulario = ({ onFormSubmit }) => {
   const today = new Date();
 
   const selectOlt = (id) => {
-    setOlt(id); // Atualiza o estado com o ID selecionado
-    console.log(olt); // Exemplo de uso// Exemplo de uso
+    setOlt(id); 
 
   };
   const selectCto = (id) => {
-    setCto(id); // Atualiza o estado com o ID selecionado
-    console.log("ID selecionado:", id); // Exemplo de uso
+    setCto(id); 
   };
 
   const selectPorta = (id) => {
@@ -50,9 +48,8 @@ const Formulario = ({ onFormSubmit }) => {
   }
 
   useEffect(() => {
-    const today = new Date();
-    // Define a dataregistro atual no formato YYYY-MM-DD ao carregar o componente    
-    setData(today.toISOString().slice(0, 10)); // Formato YYYY-MM-DD
+    const today = new Date();   
+    setData(today.toISOString().slice(0, 10)); 
   }, []);
 
   const handleSubmit = async (e) => {
@@ -71,7 +68,6 @@ const Formulario = ({ onFormSubmit }) => {
     };
 
     try {
-      console.log(JSON.stringify(formData))
       const response = await fetch('http://localhost:8080/registros', {
         method: 'POST',
         headers: {
@@ -79,16 +75,10 @@ const Formulario = ({ onFormSubmit }) => {
         },
         body: JSON.stringify(formData), // Converte os dados do formulário em JSON
       });
-      console.log(formData)
-      console.log(response)
       onFormSubmit();
       if (!response.ok) {
         throw new Error('Erro ao enviar o formulário');
       }
-
-      const result = await response.json();
-      console.log(JSON.stringify(formData))
-      console.log('Dados enviados com sucesso:', result);
 
       // Opcional: Resetar o formulário após o envio bem-sucedido
       selectCodigo('');

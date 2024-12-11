@@ -2,13 +2,13 @@ import useFetch from "../../Services/useFetch";
 import './selectApp.css'
 
 
-const SelectApp = ({ label, uri, onSelectChange, valor }) => {
+const SelectApp = ({ label, uri, onSelectChange, valor, nome }) => {
 
     const { data, loading, error } = useFetch(uri);
 
     const handleChange = (e) => {
         const selectedValue = e.target.value;
-        onSelectChange(selectedValue);
+        onSelectChange(selectedValue, e.target.name);
     };
 
     return (
@@ -16,9 +16,10 @@ const SelectApp = ({ label, uri, onSelectChange, valor }) => {
             <label>{label}</label>
 
             {loading && <p>Carregando...</p>}
-            {error && <p>Erro: {error}</p>}
+            {error && <p></p>}
             {data && (
                 <select
+                    name={nome}
                     value={valor}
                     onChange={handleChange}
                 >

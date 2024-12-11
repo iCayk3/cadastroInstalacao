@@ -8,7 +8,7 @@ export default function BasicDatePicker({aoAlterado}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DatePicker']}>
-        <DatePicker label="Basic date picker" onChange={aoAlterado} />
+        <DatePicker label="Filtrar por data" onChange={aoAlterado} />
       </DemoContainer>
     </LocalizationProvider>
   );

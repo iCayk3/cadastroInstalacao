@@ -1,5 +1,6 @@
 package br.com.w4solution.controle_instalacao.controller;
 
+import br.com.w4solution.controle_instalacao.domain.cliente.Cliente;
 import br.com.w4solution.controle_instalacao.domain.registro.Procedimento;
 import br.com.w4solution.controle_instalacao.dto.registro.*;
 import br.com.w4solution.controle_instalacao.repository.cliente.ClienteRepository;
@@ -11,9 +12,6 @@ import br.com.w4solution.controle_instalacao.repository.registro.RegistroReposit
 import br.com.w4solution.controle_instalacao.services.ValidacoesRegistro;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -129,5 +127,50 @@ public class RegistroController {
 
         return ResponseEntity.created(uriRegistro).body(new RegistroDTO(registro));
 
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity atualizarRegistro(@RequestBody AtualizarRegistroDTO dados){
+
+        var registro = registroRepository.findById(dados.id());
+        if(registro.isPresent()) {
+            if (dados.codigo() != null) {
+                var buscaCliente = clienteRepository.findByCodigo(dados.codigo());
+                var cliente = buscaCliente.orElseGet(() -> {
+                    return new Cliente(dados.codigo());
+                });
+                registro.get().setCliente(cliente);
+            }
+            if (dados.nomeOlt() != null) {
+                var olt = oltRepository.findById(dados.nomeOlt());
+                olt.ifPresent(value -> registro.get().setOlt(value));
+            }
+            if (dados.porta() != null) {
+                var porta = portaRepository.findById(dados.porta());
+                porta.ifPresent(value -> registro.get().setPorta(value));
+            }
+            if (dados.nomeCto() != null) {
+                var cto = ctoRepository.findById(dados.nomeCto());
+                cto.ifPresent(value -> registro.get().setCtoRegistro(value));
+            }
+            if (dados.nomeEquipeTecnica() != null) {
+                var equipeTecnica = equipeTecnicaRepository.findById(dados.nomeEquipeTecnica());
+                equipeTecnica.ifPresent(value -> registro.get().setEquipeTecnica(value));
+            }
+            if (dados.data() != null) {
+                registro.get().setData(dados.data());
+            }
+            if (dados.procedimento() != null) {
+                registro.get().setProcedimento(dados.procedimento());
+            }
+            if (dados.ctoAntiga() != null) {
+                registro.get().setCtoAntiga(dados.ctoAntiga());
+            }
+            if (dados.localidade() != null) {
+                registro.get().setLocalidade(dados.localidade());
+            }
+        }
+        return ResponseEntity.ok().build();
     }
 }

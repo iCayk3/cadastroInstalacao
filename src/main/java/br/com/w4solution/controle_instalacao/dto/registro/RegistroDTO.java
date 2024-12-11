@@ -2,7 +2,9 @@ package br.com.w4solution.controle_instalacao.dto.registro;
 
 import br.com.w4solution.controle_instalacao.domain.registro.Procedimento;
 import br.com.w4solution.controle_instalacao.domain.registro.Registro;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -10,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegistroDTO{
    private Long id;
    private Integer codigo;
@@ -40,5 +44,7 @@ public class RegistroDTO{
        this.ctoAntiga = dados.getCtoAntiga();
        this.localidade = dados.getLocalidade().toUpperCase();
    }
+
+
 
 }

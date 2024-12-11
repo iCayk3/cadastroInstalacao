@@ -1,38 +1,45 @@
-import React from 'react';
 import './TableHorizontal.css'
 import { RiFileEditFill } from "react-icons/ri";
 import { useState } from 'react';
 import { AiOutlineClose } from "react-icons/ai";
 import { GiConfirmed } from "react-icons/gi";
 import SelectApp from '../SelectApp';
+import InputTextApp from '../InputTextApp';
+import * as React from 'react';
+import AlertApp from '../AlertApp';
+
 
 const TableHorizontal = ({ data, loading, error, aoSalvar }) => {
 
   const [editRowId, setEditRowId] = useState(null);
-  const [formData, setFormData] = useState({}); 
-  const [olt, setOlt] = useState('');
-
-  const selectOlt = (id) => {
-    setOlt(id); 
-  };
-
-
+  const [formData, setFormData] = useState({});
+  const [alertMessage, setAlertMessage] = useState(null);
 
   const handleEditClick = (row) => {
-    console.log(row)
-    setEditRowId(row.id); 
+    setEditRowId(row.id);
     setFormData({ ...row });
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const handleInputChange = (value, name) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveClick = () => {
-    aoSalvar(editRowId, formData);
-    setEditRowId(null); 
-    setFormData({}); 
+  const handleSaveClick = async() => {
+    // aoSalvar(editRowId, formData);
+    try {
+      const response = await aoSalvar(editRowId, formData);
+      if (response.status !== "ok") {
+        setAlertMessage(`Erro ao salvar: ${response.message || "Status inválido"}`);
+      } else {
+        setEditRowId(null);
+        setFormData({});
+      }
+    } catch (err) {
+      setAlertMessage(`Erro ao salvar: ${err.message}`);
+    }
+
+    setEditRowId(null);
+    setFormData({});
   };
 
   const handleCancelClick = () => {
@@ -45,7 +52,7 @@ const TableHorizontal = ({ data, loading, error, aoSalvar }) => {
       <h3>Dados Cadastrados</h3>
       {loading && <p>Carregando dados...</p>}
       {error && <p>Erro ao carregar os dados: {error.message}</p>}
-
+      {alertMessage && <AlertApp severity={"error"} texto={"Preencha todos os campos que ja estavam preenchidos"} onclose={() => setAlertMessage(null)} />}
       {data && data.length > 0 ? (
         <table>
           <thead>
@@ -68,75 +75,59 @@ const TableHorizontal = ({ data, loading, error, aoSalvar }) => {
                 {editRowId === row.id ? (
                   <>
                     <td className='editar-ed'>
-                      <AiOutlineClose onClick={handleCancelClick} style={{cursor:"pointer"}}/>
-                      <GiConfirmed onClick={handleSaveClick} style={{cursor:"pointer"}}/>
+                      <AiOutlineClose onClick={handleCancelClick} style={{ cursor: "pointer" }} />
+                      <GiConfirmed onClick={handleSaveClick} style={{ cursor: "pointer" }} />
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        name="codigo"
-                        value={formData.codigo}
-                        onChange={handleInputChange}
-                      />
+                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.codigo} obrigatorio={true} nome="codigo"/>
                     </td>
                     <td>
-                      <SelectApp uri={"http://localhost:8080/olt"} onSelectChange={selectOlt} valor={row.nomeOlt}/>
+                      <SelectApp uri={"http://localhost:8080/olt"} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeOlt.id} nome={"nomeOlt"}/>
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        name="nomeCto"
-                        value={formData.nomeCto}
-                        onChange={handleInputChange}
-                      />
+                      {formData.nomeOlt && <SelectApp uri={`http://localhost:8080/olt/${formData.nomeOlt}/cto`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeCto.id} nome={"nomeCto"} />}
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        name="porta"
-                        value={formData.porta}
-                        onChange={handleInputChange}
-                      />
+                      {formData.nomeCto && <SelectApp uri={`http://localhost:8080/olt/cto/${formData.nomeCto}/portas`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.porta.id} nome={"porta"} />}
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        name="nomeEquipeTecnica"
-                        value={formData.nomeEquipeTecnica}
-                        onChange={handleInputChange}
-                      />
+                      <SelectApp uri="http://localhost:8080/tecnico/equipes" onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeEquipeTecnica.id} nome={"nomeEquipeTecnica"} />
                     </td>
                     <td>
-                      <input
-                        type="date"
-                        name="data"
-                        value={formData.data}
-                        onChange={handleInputChange}
-                      />
+                      <div className="form-group">
+                        <input
+                          id="date"
+                          name="data"
+                          type="date"
+                          value={formData.data}
+                          required
+                          onChange={(valor) => handleInputChange(valor.target.value, valor.target.name)}
+                        /></div>
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        name="procedimento"
-                        value={formData.procedimento}
-                        onChange={handleInputChange}
-                      />
+                      <div className="form-group">
+                        <select
+                          value={formData.procedimento}
+                          onChange={(valor) => handleInputChange(valor.target.value, valor.target.name)}
+                          required
+                          name='procedimento'
+                        >
+                          <option value="">Selecione o procedimento</option>
+                          <option value="INSTALACAO">INSTALAÇÃO</option>  
+                          <option value="MUDANCA_ENDERECO">MUDANCA DE ENDEREÇO</option>
+                          <option value="REPARO">REPARO</option>
+                          <option value="TROCA_EQUIPAMENTO">TROCA DE EQUIPAMENTO</option>
+                          <option value="CANCELAMENTO">CANCELAMENTO</option>
+                          <option value="REATIVACAO">REATIVAÇÃO</option>
+                          <option value="MIGRACAO">MIGRAÇÃO</option>
+                        </select>
+                      </div>
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        name="ctoAntiga"
-                        value={formData.ctoAntiga}
-                        onChange={handleInputChange}
-                      />
+                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.ctoAntiga} obrigatorio={false} nome="ctoAntiga"/>
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        name="localidade"
-                        value={formData.localidade}
-                        onChange={handleInputChange}
-                      />
+                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.localidade} obrigatorio={true}nome="localidade" />
                     </td>
                   </>
                 ) : (

@@ -5,6 +5,7 @@ import br.com.w4solution.controle_instalacao.domain.olt.Cto;
 import br.com.w4solution.controle_instalacao.domain.olt.Olt;
 import br.com.w4solution.controle_instalacao.domain.olt.Porta;
 import br.com.w4solution.controle_instalacao.domain.tecnico.EquipeTecnica;
+import br.com.w4solution.controle_instalacao.dto.registro.AtualizarRegistroDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -71,6 +72,10 @@ public class Registro {
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return LocalDateTime.parse(data + " 00:00:00", formatter);
+    }
+
+    public void setData(String data){
+        this.data = converterParaData(data);
     }
 
 

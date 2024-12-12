@@ -19,10 +19,10 @@ const columns = [
 const paginationModel = { page: 0, pageSize: 10 };
 
 export default function DataTable({filtro}) {
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [dataFiltro, setDataFiltro] = React.useState('');
   const [tecnico, setTecnico] = React.useState('');
-  const { data, loading, error } = useFetch(`http://localhost:8080/registros?filtro=${filtro}`);
+  const { data, loading, error } = useFetch(`${apiUrl}/registros?filtro=${filtro}`);
 
   const aoAlteradoTecnico = (tecnico) => {
     if (tecnico === null) {

@@ -6,7 +6,9 @@ import styles from './DashPizza.module.css'
 
 export default function DashPizza({filtro}) {
 
-  const { data, loading, error } = useFetch(`http://localhost:8080/registros/servicos/tecnicos/mensal/resumo?filtro=${filtro}`)
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  const { data, loading, error } = useFetch(`${apiUrl}/registros/servicos/tecnicos/mensal/resumo?filtro=${filtro}`)
 
   return (
     <section className={styles.dashPizza}>

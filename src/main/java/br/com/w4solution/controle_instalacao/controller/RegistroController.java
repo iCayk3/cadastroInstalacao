@@ -54,7 +54,6 @@ public class RegistroController {
             return ResponseEntity.ok().body(registroPorEquipe);
         }
         if(filtro != null){
-            System.out.println(filtro);
             LocalDate data = LocalDate.parse(filtro);
             var registros = registroRepository.encontrarPorData(data.getMonthValue(), data.getYear()).stream().map(RegistroDTO::new).toList();
             return ResponseEntity.ok().body(registros);
@@ -67,7 +66,6 @@ public class RegistroController {
     public ResponseEntity<List<ServicosPorEquipeMensal>> listarServicosPorEquipe(@RequestParam(required = false) String filtro){
 
         var equipes = equipeTecnicaRepository.findAll();
-        System.out.println(filtro);
         var variavel = equipes.stream().map(e -> {
 
             List<Object[]> resultados = null;

@@ -5,15 +5,15 @@ import useFetch from '../../Services/useFetch';
 import './Main.css'
 
 const Main = () => {
-
+    const apiUrl = process.env.REACT_APP_API_URL;
     const [refreshTable, setRefreshTable] = useState(false);
 
-    const { data, loading, error } = useFetch(`http://localhost:8080/registros/top5?refresh=${refreshTable}`);
+    const { data, loading, error } = useFetch(`${apiUrl}/registros/top5?refresh=${refreshTable}`);
     const [alertMessage, setAlertMessage] = useState(null);
 
     const salvarEdicao = async (editRowId, formData) => {
         try {
-            const response = await fetch(`http://localhost:8080/registros/${editRowId}`, {
+            const response = await fetch(`${apiUrl}/registros/${editRowId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

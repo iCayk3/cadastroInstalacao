@@ -11,6 +11,7 @@ import AlertApp from '../AlertApp';
 
 const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose }) => {
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   const [editRowId, setEditRowId] = useState(null);
   const [formData, setFormData] = useState({});
 
@@ -69,16 +70,16 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
                       <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.codigo} obrigatorio={true} nome="codigo"/>
                     </td>
                     <td>
-                      <SelectApp uri={"http://localhost:8080/olt"} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeOlt.id} nome={"nomeOlt"}/>
+                      <SelectApp uri={`${apiUrl}/olt`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeOlt.id} nome={"nomeOlt"}/>
                     </td>
                     <td>
-                      {formData.nomeOlt && <SelectApp uri={`http://localhost:8080/olt/${formData.nomeOlt}/cto`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeCto.id} nome={"nomeCto"} />}
+                      {formData.nomeOlt && <SelectApp uri={`${apiUrl}/olt/${formData.nomeOlt}/cto`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeCto.id} nome={"nomeCto"} />}
                     </td>
                     <td>
-                      {formData.nomeCto && <SelectApp uri={`http://localhost:8080/olt/cto/${formData.nomeCto}/portas`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.porta.id} nome={"porta"} />}
+                      {formData.nomeCto && <SelectApp uri={`${apiUrl}/olt/cto/${formData.nomeCto}/portas`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.porta.id} nome={"porta"} />}
                     </td>
                     <td>
-                      <SelectApp uri="http://localhost:8080/tecnico/equipes" onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeEquipeTecnica.id} nome={"nomeEquipeTecnica"} />
+                      <SelectApp uri={`${apiUrl}/tecnico/equipes`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeEquipeTecnica.id} nome={"nomeEquipeTecnica"} />
                     </td>
                     <td>
                       <div className="form-group">

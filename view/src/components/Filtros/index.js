@@ -6,6 +6,8 @@ import styles from './Filtros.module.css'
 
 export default function Filtros({aoAlteradoTecnico, aoAlteradoData}) {
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     function selectEquipe(evento, value) {
         if (value === null) {
             aoAlteradoTecnico('')
@@ -34,7 +36,7 @@ export default function Filtros({aoAlteradoTecnico, aoAlteradoData}) {
                 <BasicDatePicker aoAlterado={(value) => selectData(value)} label={"Selecione a data"}/>
             </div>
             <div className={styles.gridItem}>
-                <FieldAutoComplet uri="http://localhost:8080/tecnico/equipes" label={"Técnicos"} aoAlterado={(event, value) => selectEquipe(event, value)} />
+                <FieldAutoComplet uri={`${apiUrl}/tecnico/equipes`} label={"Técnicos"} aoAlterado={(event, value) => selectEquipe(event, value)} />
             </div>
         </div>
     )

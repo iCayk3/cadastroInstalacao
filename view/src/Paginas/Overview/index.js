@@ -7,13 +7,13 @@ import styles from './Overview.module.css'
 
 export default function Overview(){
 
+    const apiUrl = process.env.REACT_APP_API_URL;
     const today = new Date();   
     const [dataConsulta, setDataConsulta] = useState(today.toISOString().slice(0, 10))
-    const { data, loading, error} = useFetch(`http://127.0.0.1:8080/registros/servicos/mensais/resumo?filtro=${dataConsulta}`)
+    const { data, loading, error} = useFetch(`${apiUrl}/registros/servicos/mensais/resumo?filtro=${dataConsulta}`)
 
     const selectData = (even) => {
         setDataConsulta(even.toISOString().slice(0, 10))
-        console.log(dataConsulta)
     }
 
     return (

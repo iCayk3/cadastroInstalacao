@@ -6,6 +6,7 @@ import InputTextApp from '../InputTextApp';
 
 const Formulario = ({ onFormSubmit }) => {
 
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   // Estados para armazenar os valores dos campos
   const [codigo, setCodigo] = useState('');
@@ -68,7 +69,7 @@ const Formulario = ({ onFormSubmit }) => {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/registros', {
+      const response = await fetch(`${apiUrl}/registros`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,10 +103,10 @@ const Formulario = ({ onFormSubmit }) => {
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
           <InputTextApp label="CÓDIGO" onSelectChange={selectCodigo} valor={codigo} obrigatorio={true} />
-          <SelectApp label="OLT" uri="http://localhost:8080/olt" onSelectChange={selectOlt} valor={olt} />
-          {olt && <SelectApp label="CTO" uri={`http://localhost:8080/olt/${olt}/cto`} onSelectChange={selectCto} valor={cto} />}
-          {cto && <SelectApp label="PORTA" uri={`http://localhost:8080/olt/cto/${cto}/portas`} onSelectChange={selectPorta} valor={porta} />}
-          <SelectApp label="TÉCNICO" uri="http://localhost:8080/tecnico/equipes" onSelectChange={selectTecnico} valor={tecnico} />
+          <SelectApp label="OLT" uri={`${apiUrl}/olt`} onSelectChange={selectOlt} valor={olt} />
+          {olt && <SelectApp label="CTO" uri={`${apiUrl}/olt/${olt}/cto`} onSelectChange={selectCto} valor={cto} />}
+          {cto && <SelectApp label="PORTA" uri={`${apiUrl}/olt/cto/${cto}/portas`} onSelectChange={selectPorta} valor={porta} />}
+          <SelectApp label="TÉCNICO" uri={`${apiUrl}/tecnico/equipes`} onSelectChange={selectTecnico} valor={tecnico} />
 
           <div className="form-group">
             <label>Data:</label>

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,23 +48,35 @@ public class RegistroController {
     ValidacoesRegistro validacoesRegistro;
 
     @GetMapping
-    public ResponseEntity<List<RegistroDTO>> listarRegistro(@RequestParam(required = false) Long equipe){
+    public ResponseEntity<List<RegistroDTO>> listarRegistro(@RequestParam(required = false) Long equipe, @RequestParam(required = false) String filtro){
         if(equipe != null){
             var registroPorEquipe = registroRepository.encontrarRegistroPorEquipe(equipe).stream().map(RegistroDTO::new).toList();
             return ResponseEntity.ok().body(registroPorEquipe);
+        }
+        if(filtro != null){
+            System.out.println(filtro);
+            LocalDate data = LocalDate.parse(filtro);
+            var registros = registroRepository.encontrarPorData(data.getMonthValue(), data.getYear()).stream().map(RegistroDTO::new).toList();
+            return ResponseEntity.ok().body(registros);
         }
         var registros = registroRepository.findAllByOrderByIdDesc().stream().map(RegistroDTO::new).toList();
         return ResponseEntity.ok(registros);
     }
 
     @GetMapping("/servicos/tecnicos/mensal/resumo")
-    public ResponseEntity<List<ServicosPorEquipeMensal>> listarServicosPorEquipe(){
+    public ResponseEntity<List<ServicosPorEquipeMensal>> listarServicosPorEquipe(@RequestParam(required = false) String filtro){
 
         var equipes = equipeTecnicaRepository.findAll();
-        var servicos  = registroRepository.EncontrarRegistroMensalPorTecnico(equipes.get(0).getId(), LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
-
+        System.out.println(filtro);
         var variavel = equipes.stream().map(e -> {
-            var resultados  = registroRepository.EncontrarRegistroMensalPorTecnico(e.getId(), LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+
+            List<Object[]> resultados = null;
+            if(filtro != null){
+                LocalDate data = LocalDate.parse(filtro);
+                resultados  = registroRepository.EncontrarRegistroMensalPorTecnico(e.getId(), data.getMonthValue(), data.getYear());
+            }else {
+                resultados  = registroRepository.EncontrarRegistroMensalPorTecnico(e.getId(), LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+            }
             List<ServicosEquipe> servicos2 = new ArrayList<>();
             for (Object[] resultado : resultados) {
                 Procedimento procedimento = (Procedimento) resultado[0];
@@ -82,32 +96,35 @@ public class RegistroController {
     }
 
     @GetMapping("/servicos/mensais/resumo")
-    public ResponseEntity<ResumoServicoMensalDTO> listarResumoMensal(){
-        var resumoReativacao = registroRepository.buscarResumoMensal(Procedimento.REATIVACAO, LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+    public ResponseEntity<ResumoServicoMensalDTO> listarResumoMensal(@RequestParam(required = false) String filtro){
+
+        LocalDate data = LocalDate.parse(filtro);
+
+        var resumoReativacao = registroRepository.buscarResumoMensal(Procedimento.REATIVACAO, data.getMonthValue(), data.getYear());
         if(resumoReativacao == null){
             resumoReativacao = 0;
         }
-        var resumoCancelamento = registroRepository.buscarResumoMensal(Procedimento.CANCELAMENTO, LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+        var resumoCancelamento = registroRepository.buscarResumoMensal(Procedimento.CANCELAMENTO, data.getMonthValue(), data.getYear());
         if(resumoCancelamento == null){
             resumoCancelamento = 0;
         }
-        var resumoInstalacao = registroRepository.buscarResumoMensal(Procedimento.INSTALACAO, LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+        var resumoInstalacao = registroRepository.buscarResumoMensal(Procedimento.INSTALACAO, data.getMonthValue(), data.getYear());
         if(resumoInstalacao == null){
             resumoInstalacao = 0;
         }
-        var resumoMigracao = registroRepository.buscarResumoMensal(Procedimento.MIGRACAO, LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+        var resumoMigracao = registroRepository.buscarResumoMensal(Procedimento.MIGRACAO, data.getMonthValue(), data.getYear());
         if(resumoMigracao == null){
             resumoMigracao = 0;
         }
-        var resumoMudanca = registroRepository.buscarResumoMensal(Procedimento.MUDANCA_ENDERECO, LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+        var resumoMudanca = registroRepository.buscarResumoMensal(Procedimento.MUDANCA_ENDERECO, data.getMonthValue(), data.getYear());
         if(resumoMudanca == null){
             resumoMudanca = 0;
         }
-        var resumoReparo = registroRepository.buscarResumoMensal(Procedimento.REPARO, LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+        var resumoReparo = registroRepository.buscarResumoMensal(Procedimento.REPARO, data.getMonthValue(), data.getYear());
         if(resumoReparo == null){
             resumoReparo = 0;
         }
-        var resumoTroca = registroRepository.buscarResumoMensal(Procedimento.TROCA_EQUIPAMENTO, LocalDate.now().getMonth().getValue(), LocalDate.now().getYear());
+        var resumoTroca = registroRepository.buscarResumoMensal(Procedimento.TROCA_EQUIPAMENTO, data.getMonthValue(), data.getYear());
         if(resumoTroca == null){
             resumoTroca = 0;
         }

@@ -1,7 +1,17 @@
+.tablecomponent{
+  display: block;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 4px;
+  border-radius: 8px;
+}
+
 .tablecomponent table {
     width: 100%;
     border-collapse: collapse;
     box-sizing: border-box;
+    margin-bottom: 128px;
   }
   
   .tablecomponent h1 {

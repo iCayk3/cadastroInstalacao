@@ -1,14 +1,24 @@
 import * as React from 'react';
+import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import 'dayjs/locale/pt';
 
-export default function BasicDatePicker({aoAlterado}) {
+const currentYear = dayjs();
+
+export default function BasicDatePicker({ aoAlterado, label, views, open }) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"pt-BR"}>
       <DemoContainer components={['DatePicker']}>
-        <DatePicker label="Filtrar por data" onChange={aoAlterado} />
+        <DatePicker
+          label={label}
+          onChange={aoAlterado}
+          views={views} 
+          maxDate={currentYear}
+          openTo={open}
+          />
       </DemoContainer>
     </LocalizationProvider>
   );

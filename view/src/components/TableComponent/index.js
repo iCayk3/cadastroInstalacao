@@ -1,7 +1,8 @@
 import React from 'react';
 import './TableComponent.css'
+import BasicDatePicker from '../BasicDatePicker';
 
-const TableComponent = ({dataApiCto, loagdinCto, errorCto}) => {
+const TableComponent = ({dataApiCto, loagdinCto, errorCto, aoSelectData}) => {
 
     if (loagdinCto) return <p>Carregando...</p>;
     if (errorCto) return <p>Erro ao carregar os dados: {errorCto}</p>;
@@ -46,6 +47,7 @@ const TableComponent = ({dataApiCto, loagdinCto, errorCto}) => {
                     </tr>
                 </tbody>
             </table>
+            <BasicDatePicker label={"Selecione o ano e mês"} views={['month']} aoAlterado={aoSelectData} open={'month'}/>
         </div>
     );
 };

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import BasicDatePicker from "../BasicDatePicker";
 import FieldAutoComplet from "../FieldAutoComplet";
 import styles from './Filtros.module.css'
@@ -32,7 +31,7 @@ export default function Filtros({aoAlteradoTecnico, aoAlteradoData}) {
         <div className={styles.filtroContainer}>
             <h3 className={styles.gridItem}>Filtros</h3>
             <div className={styles.gridItem}>
-                <BasicDatePicker aoAlterado={(value) => selectData(value)}/>
+                <BasicDatePicker aoAlterado={(value) => selectData(value)} label={"Selecione a data"}/>
             </div>
             <div className={styles.gridItem}>
                 <FieldAutoComplet uri="http://localhost:8080/tecnico/equipes" label={"Técnicos"} aoAlterado={(event, value) => selectEquipe(event, value)} />

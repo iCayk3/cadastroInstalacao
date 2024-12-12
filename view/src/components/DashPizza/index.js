@@ -4,19 +4,19 @@ import { valueFormatter } from './DataFet';
 import useFetch from '../../Services/useFetch';
 import styles from './DashPizza.module.css'
 
-export default function DashPizza() {
+export default function DashPizza({filtro}) {
 
-  const { data, loading, error } = useFetch('http://localhost:8080/registros/servicos/tecnicos/mensal/resumo')
+  const { data, loading, error } = useFetch(`http://localhost:8080/registros/servicos/tecnicos/mensal/resumo?filtro=${filtro}`)
 
   return (
     <section className={styles.dashPizza}>
       {error && <p>Erro ao solicitar: {error}</p>}
       {loading && <p>Carregando...</p>}
       {data && data.map((dados) => (
-        <>
-          <div className={styles.itens}>
+        <>  
+          <div className={styles.itens} >
             <h4>{dados.nome}</h4>
-            <PieChart key={data.id}
+            <PieChart
               series={[
                 {
                   data: dados.servicos,
@@ -25,7 +25,7 @@ export default function DashPizza() {
                   valueFormatter,
                 },
               ]}
-              height={280} /></div></>
+              height={280} key={data.nome}/></div></>
       ))}
     </section >
 

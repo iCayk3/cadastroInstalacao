@@ -9,11 +9,10 @@ import * as React from 'react';
 import AlertApp from '../AlertApp';
 
 
-const TableHorizontal = ({ data, loading, error, aoSalvar }) => {
+const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose }) => {
 
   const [editRowId, setEditRowId] = useState(null);
   const [formData, setFormData] = useState({});
-  const [alertMessage, setAlertMessage] = useState(null);
 
   const handleEditClick = (row) => {
     setEditRowId(row.id);
@@ -25,19 +24,7 @@ const TableHorizontal = ({ data, loading, error, aoSalvar }) => {
   };
 
   const handleSaveClick = async() => {
-    // aoSalvar(editRowId, formData);
-    try {
-      const response = await aoSalvar(editRowId, formData);
-      if (response.status !== "ok") {
-        setAlertMessage(`Erro ao salvar: ${response.message || "Status inválido"}`);
-      } else {
-        setEditRowId(null);
-        setFormData({});
-      }
-    } catch (err) {
-      setAlertMessage(`Erro ao salvar: ${err.message}`);
-    }
-
+    aoSalvar(editRowId, formData);
     setEditRowId(null);
     setFormData({});
   };
@@ -52,7 +39,7 @@ const TableHorizontal = ({ data, loading, error, aoSalvar }) => {
       <h3>Dados Cadastrados</h3>
       {loading && <p>Carregando dados...</p>}
       {error && <p>Erro ao carregar os dados: {error.message}</p>}
-      {alertMessage && <AlertApp severity={"error"} texto={"Preencha todos os campos que ja estavam preenchidos"} onclose={() => setAlertMessage(null)} />}
+      {alertMessage && <AlertApp severity={"error"} texto={"Preencha todos os campos que ja estavam preenchidos"} fechar={onclose}/>}
       {data && data.length > 0 ? (
         <table>
           <thead>

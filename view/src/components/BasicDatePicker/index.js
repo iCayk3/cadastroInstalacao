@@ -10,7 +10,7 @@ const currentYear = dayjs();
 
 export default function BasicDatePicker({ aoAlterado, label, views, open }) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"pt-BR"}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"pt"}>
       <DemoContainer components={['DatePicker']}>
         <DatePicker
           label={label}

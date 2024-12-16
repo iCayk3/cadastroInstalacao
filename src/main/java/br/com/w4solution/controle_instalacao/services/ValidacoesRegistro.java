@@ -53,11 +53,15 @@ public class ValidacoesRegistro {
             });
 
             var porta = buscaPorta.get();
-//            if(porta.getClientes() != null){
-//                portaRepository.removeClienteFromPorta(porta.getId());
-//            }
-            cliente.setPortaCliente(porta);
-            clienteRepository.save(cliente);
+
+            if (porta.getClientes() == null) {
+                cliente.setPortaCliente(porta);
+                clienteRepository.save(cliente);
+            }else {
+                clienteRepository.removerPortaDeCliente(porta.getClientes().getId());
+                cliente.setPortaCliente(porta);
+                clienteRepository.save(cliente);
+            }
 
             var buscaOlt = oltRepository.findById(dados.olt());
             var buscaCto = ctoRepository.findById(dados.cto());

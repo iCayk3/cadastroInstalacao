@@ -1,18 +1,1 @@
-	DO
-	$$
-	DECLARE
-	    cto_id INT;   
-	    i INT;        
-	    j INT;        
-	BEGIN
-	    FOR i IN 1..6 LOOP       
-	        INSERT INTO CTOS (nome_cto, olt_id)
-	        VALUES ('CTO BUCU ' || i, 7)
-	        RETURNING id INTO cto_id;
-	        FOR j IN 1..16 LOOP
-	            INSERT INTO portas (cto_id, porta)
-	            VALUES (cto_id, j);
-	        END LOOP;
-	    END LOOP;
-	END;
-	$$;
+INSERT INTO equipe_tecnica (nome_equipe)VALUES ('"CLENILSON E NETO'),('NELSON E FABRICIO'),('RAFAEL E ANDRE'),('CLEILTON E EDSON'),('CLEITON E IRANILDO')

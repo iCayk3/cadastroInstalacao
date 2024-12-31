@@ -9,7 +9,7 @@ import * as React from 'react';
 import AlertApp from '../AlertApp';
 
 
-const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose }) => {
+const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose, procedimentos }) => {
 
   const apiUrl = process.env.REACT_APP_API_URL;
   const [editRowId, setEditRowId] = useState(null);
@@ -55,6 +55,7 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
               <th>Procedimento</th>
               <th>CTO Antiga</th>
               <th>Localidade</th>
+              <th>Observação</th>
             </tr>
           </thead>
           <tbody>
@@ -101,21 +102,21 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
                           name='procedimento'
                         >
                           <option value="">Selecione o procedimento</option>
-                          <option value="INSTALACAO">INSTALAÇÃO</option>  
-                          <option value="MUDANCA_ENDERECO">MUDANCA DE ENDEREÇO</option>
-                          <option value="REPARO">REPARO</option>
-                          <option value="TROCA_EQUIPAMENTO">TROCA DE EQUIPAMENTO</option>
-                          <option value="CANCELAMENTO">CANCELAMENTO</option>
-                          <option value="REATIVACAO">REATIVAÇÃO</option>
-                          <option value="MIGRACAO">MIGRAÇÃO</option>
+                          {procedimentos.map((item) => (
+                            <option value={item.id}>{item.id === formData.procedimento ? item.label : item.id}</option> 
+                          ))}
+
                         </select>
                       </div>
                     </td>
                     <td>
-                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.ctoAntiga} obrigatorio={false} nome="ctoAntiga"/>
+                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.ctoAntiga} nome="ctoAntiga"/>
                     </td>
                     <td>
-                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.localidade} obrigatorio={true}nome="localidade" />
+                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.localidade} obrigatorio nome="localidade" />
+                    </td>
+                    <td>
+                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.observacao} nome="observacao"/>
                     </td>
                   </>
                 ) : (
@@ -135,6 +136,7 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
                     <td>{row.procedimento}</td>
                     <td>{row.ctoAntiga}</td>
                     <td>{row.localidade}</td>
+                    <td>{row.observacao}</td>
                   </>
                 )}
               </tr>

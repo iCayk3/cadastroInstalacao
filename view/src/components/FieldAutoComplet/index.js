@@ -4,22 +4,70 @@ import Autocomplete from '@mui/material/Autocomplete';
 import useFetch from '../../Services/useFetch';
 
 
-export default function FieldAutoComplet({ uri, label, aoAlterado }) {
+export default function FieldAutoComplet({ uri, label, aoAlterado, dadosProcedimento, desabilitar, porta, obrigatorio, valor, inputValue, onInputValueChange }) {
 
     const { data, loading, error } = useFetch(uri)
 
+
     return (
         <>
-            {error && <p>Erro na solitação</p>}
-            {loading && <p>Carregando</p>}
-            {data &&
+            {!porta && !desabilitar && !dadosProcedimento && error && <p>Erro na solitação</p>}
+            {!porta && !desabilitar && !dadosProcedimento && loading && <p>Carregando</p>}
+            {!porta && !desabilitar && !dadosProcedimento && data &&
                 <Autocomplete
-                    onChange={aoAlterado}
-                    disablePortal
+                    value={valor}
+                    inputValue={inputValue}
+                    onChange={(evento, novoValor) => aoAlterado(novoValor)}
+                    onInputChange={(event, novoInput) => onInputValueChange(novoInput)}
                     options={data}
+                    getOptionLabel={(option) => option.label || ""}
+                    isOptionEqualToValue={(option, value) => option.id === value?.id}
+                    disablePortal
+                    sx={{ width: 300 }}
+                    renderInput={(params) => <TextField {...params} required={obrigatorio} label={label} />}
+                />
+            }
+            {
+                !porta && dadosProcedimento && !uri &&
+                <Autocomplete
+                    value={valor}
+                    inputValue={inputValue}
+                    onChange={(evento, novoValor) => aoAlterado(novoValor)}
+                    onInputChange={(event, novoInput) => onInputValueChange(novoInput)}
+                    getOptionLabel={(option) => option.label || ""}
+                    isOptionEqualToValue={(option, value) => option.id === value?.id}
+                    disablePortal
+                    options={dadosProcedimento}
+                    sx={{ width: 300 }}
+                    renderInput={(params) => <TextField {...params} required={obrigatorio} label={label} />}
+                />}
+            {
+                !porta && desabilitar && !dadosProcedimento && !uri &&
+                <Autocomplete
+                    aria-required={obrigatorio}
+                    disabled={desabilitar}
+                    disablePortal
+                    options={[{ data: "data" }]}
                     sx={{ width: 300 }}
                     renderInput={(params) => <TextField {...params} label={label} />}
                 />}
+            {porta && !desabilitar && !dadosProcedimento && error && <p>Erro na solitação</p>}
+            {porta && !desabilitar && !dadosProcedimento && loading && <p>Carregando</p>}
+            {data &&
+                !desabilitar && !dadosProcedimento && porta &&
+                <Autocomplete
+                    value={valor}
+                    inputValue={inputValue}
+                    onChange={(evento, novoValor) => aoAlterado(novoValor)}
+                    onInputChange={(event, novoInput) => onInputValueChange(novoInput)}
+                    isOptionEqualToValue={(option, value) => option.id === value?.id}
+                    disablePortal
+                    options={data}
+                    sx={{ width: 300 }}
+                    getOptionLabel={(option) => `${option && option.label}: ${option && option.codigo}`}
+                    renderInput={(params) => <TextField {...params} required={obrigatorio} label={label} />}
+                />
+            }
         </>
     );
 }   

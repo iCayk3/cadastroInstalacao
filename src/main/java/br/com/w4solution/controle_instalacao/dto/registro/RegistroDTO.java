@@ -25,6 +25,7 @@ public class RegistroDTO{
    private String procedimento;
    private String ctoAntiga;
    private String localidade;
+   private String observacao;
 
    public RegistroDTO(Registro dados){
        this.id = dados.getId();
@@ -43,8 +44,6 @@ public class RegistroDTO{
        this.procedimento = dados.getProcedimento().toString();
        this.ctoAntiga = dados.getCtoAntiga();
        this.localidade = dados.getLocalidade().toUpperCase();
+       this.observacao = dados.getObservacao();
    }
-
-
-
 }

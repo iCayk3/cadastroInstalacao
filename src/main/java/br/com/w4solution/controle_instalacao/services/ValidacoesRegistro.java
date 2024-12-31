@@ -42,7 +42,7 @@ public class ValidacoesRegistro {
             cliente = buscaCliente.orElseGet(() -> {
                 return new Cliente(dados.codigo());
             });
-            registro = new Registro(cliente, equipeTecnica.get(), dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
+            registro = new Registro(cliente, equipeTecnica.get(), dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade(), dados.observacao());
         }else{
 
             var buscaPorta = portaRepository.findById(dados.porta());
@@ -65,7 +65,7 @@ public class ValidacoesRegistro {
 
             var buscaOlt = oltRepository.findById(dados.olt());
             var buscaCto = ctoRepository.findById(dados.cto());
-            registro = new Registro(null, cliente, buscaOlt.get(), buscaCto.get(), cliente.getPortaCliente(), equipeTecnica.get(), dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade());
+            registro = new Registro(null, cliente, buscaOlt.get(), buscaCto.get(), cliente.getPortaCliente(), equipeTecnica.get(), dados.dataregistro(), dados.procedimento(), dados.ctoAntiga(), dados.localidade(), dados.observacao());
 
         }
 

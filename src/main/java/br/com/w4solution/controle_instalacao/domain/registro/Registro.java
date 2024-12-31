@@ -41,8 +41,9 @@ public class Registro {
     private Procedimento procedimento;
     private String ctoAntiga;
     private String localidade;
+    private String observacao;
 
-    public Registro(Long id, Cliente cliente, Olt buscaOlt, Cto cto, Porta porta, EquipeTecnica equipeTecnica, String data, Procedimento procedimento, String ctoAntiga, String localidade) {
+    public Registro(Long id, Cliente cliente, Olt buscaOlt, Cto cto, Porta porta, EquipeTecnica equipeTecnica, String data, Procedimento procedimento, String ctoAntiga, String localidade, String observacao) {
         this.cliente = cliente;
         this.olt = buscaOlt;
         this.equipeTecnica = equipeTecnica;
@@ -52,15 +53,17 @@ public class Registro {
         this.localidade = localidade;
         this.ctoRegistro = cto;
         this.porta = porta;
+        this.observacao = observacao;
     }
 
-    public Registro(Cliente cliente, EquipeTecnica equipeTecnica, String data, Procedimento procedimento, String ctoAntiga, String localidade) {
+    public Registro(Cliente cliente, EquipeTecnica equipeTecnica, String data, Procedimento procedimento, String ctoAntiga, String localidade, String observacao) {
         this.cliente = cliente;
         this.equipeTecnica = equipeTecnica;
         this.data = converterParaData(data);
         this.procedimento = procedimento;
         this.ctoAntiga = ctoAntiga;
         this.localidade = localidade;
+        this.observacao = observacao;
     }
 
     private LocalDateTime converterParaData(String data){

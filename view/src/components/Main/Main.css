@@ -1,21 +1,18 @@
 .main {
-    margin: 0 4%;
-    width: 90%;
-    margin-top: 20px;
-    display: inline-block;
-    gap: 20px; /* Espaçamento entre os itens */
+    margin: 0 8%;
+    width: 85%;
+    /* margin-top: 20px; */
+    /* display: block; */
+    gap: 10px;
     box-sizing: border-box;
 }
-
-.grid-item:nth-child(3) {
-    grid-column: span 2; /* Item 3 ocupa as 2 colunas */
-  }
-  
+     
   .grid-item {
-    margin-top: 30px;
+    margin-top: 20px;
     background-color: #f2f2f2;
     padding: 20px;
     text-align: center;
     border: 1px solid #ccc;
     border-radius: 8px;
-  }
+    box-sizing: border-box;
+  } 

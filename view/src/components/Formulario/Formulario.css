@@ -1,6 +1,5 @@
 .form-container {
     width: 100%;
-    margin: 0 auto; /* Centraliza o formulário horizontalmente */
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
@@ -10,32 +9,11 @@
   
   .form-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 3 colunas */
-    gap: 16px; /* Espaçamento entre os campos */
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 16px; 
+    box-sizing: border-box;
   }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 90%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  textarea {
-    resize: vertical; /* Permite o redimensionamento vertical do campo de texto */
-  }
+   
   
   .submit-button {
     width: 98%;
@@ -46,10 +24,25 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 20px; /* Adiciona um espaçamento acima do botão */
+    margin-top: 20px; 
   }
   
   .submit-button:hover {
     background-color: #E14F01;
   }
   
+  .data-pick {
+   
+    height: 56px;
+  }
+  .data-pick input {
+    font-size: 16 px;
+  }
+
+  .data-pick {
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .controll-form {
+    margin-top: 8px;
+  }

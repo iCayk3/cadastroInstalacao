@@ -8,11 +8,13 @@ import 'dayjs/locale/pt';
 
 const currentYear = dayjs();
 
-export default function BasicDatePicker({ aoAlterado, label, views, open }) {
+export default function BasicDatePicker({ aoAlterado, label, views, open, valor}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"pt"}>
       <DemoContainer components={['DatePicker']}>
         <DatePicker
+          sx={{width: "100%", height: "100%"}}
+          value={valor}
           label={label}
           onChange={aoAlterado}
           views={views} 

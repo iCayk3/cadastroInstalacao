@@ -1,56 +1,51 @@
 
 import './Formulario.css'
 import React, { useEffect, useState } from 'react';
-import SelectApp from '../SelectApp';
-import InputTextApp from '../InputTextApp';
+import FieldAutoComplet from '../FieldAutoComplet';
+import BasicDatePicker from '../BasicDatePicker';
+import dayjs from 'dayjs';
+import FloatingLabelInput from '../FloatingLabelInput';
 
-const Formulario = ({ onFormSubmit }) => {
+const Formulario = ({ onFormSubmit, procedimentos }) => {
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
   // Estados para armazenar os valores dos campos
   const [codigo, setCodigo] = useState('');
-  const [cto, setCto] = useState('');
-  const [porta, setPorta] = useState('');
   const [olt, setOlt] = useState('');
+  const [oltInput, setOltInput] = useState('')
+  const [cto, setCto] = useState('');
+  const [ctoInput, setCtoInput] = useState('')
+  const [porta, setPorta] = useState('');
+  const [portaInput, setPortaInput] = useState('')
   const [tecnico, setTecnico] = useState('');
-  const [dataregistro, setData] = useState('');
+  const [tecnicoInput, setTecnicoInput] = useState('')
   const [procedimento, setProcedimento] = useState('');
+  const [inputProcedimento, setInputProcedimento] = useState('')
   const [ctoAntiga, setCtoAntiga] = useState('');
   const [localidade, setLocalidade] = useState('');
+  const [observacao, setObservacao] = useState('');
+  const [dataregistro, setData] = useState('');
+
   const today = new Date();
 
-  const selectOlt = (id) => {
-    setOlt(id); 
+  const selectData = (evento, value) => {
+    if (value === null) {
+      setData(dataregistro)
+    } else {
+      try {
+        console.log(value.toISOString().slice(0, 10))
+        setData(value.toISOString().slice(0, 10))
+      } catch (e) {
+        setData(dataregistro)
+      }
 
-  };
-  const selectCto = (id) => {
-    setCto(id); 
-  };
-
-  const selectPorta = (id) => {
-    setPorta(id);
-  };
-
-  const selectTecnico = (id) => {
-    setTecnico(id)
-  }
-
-  const selectCodigo = (item) => {
-    setCodigo(item)
-  }
-
-  const selectCtoAntiga = (item) => {
-    setCtoAntiga(item)
-  }
-
-  const selectLocalidade = (item) => {
-    setLocalidade(item)
+    }
   }
 
   useEffect(() => {
-    const today = new Date();   
-    setData(today.toISOString().slice(0, 10)); 
+    const today = new Date();
+    setData(today.toISOString().slice(0, 10));
   }, []);
 
   const handleSubmit = async (e) => {
@@ -58,15 +53,18 @@ const Formulario = ({ onFormSubmit }) => {
 
     const formData = {
       codigo: parseInt(codigo, 10),
-      olt: parseInt(olt, 10),
-      cto: parseInt(cto, 10),
-      porta: parseInt(porta, 10),
-      tecnico: parseInt(tecnico, 10),
+      olt: parseInt(olt.id, 10),
+      cto: parseInt(cto.id, 10),
+      porta: parseInt(porta.id, 10),
+      tecnico: parseInt(tecnico.id, 10),
       dataregistro,
-      procedimento,
+      procedimento: procedimento.id,
       ctoAntiga,
       localidade,
+      observacao,
     };
+
+    console.log(formData)
 
     try {
       const response = await fetch(`${apiUrl}/registros`, {
@@ -82,19 +80,19 @@ const Formulario = ({ onFormSubmit }) => {
       }
 
       // Opcional: Resetar o formulário após o envio bem-sucedido
-      selectCodigo('');
-      selectOlt('');
-      selectCto('');
-      selectPorta('');
-      selectTecnico('');
+      setCodigo('')
+      setOlt('');
+      setCto('');
+      setPorta('');
+      setTecnico('');
       setData(today.toISOString().slice(0, 10));
       setProcedimento('');
-      selectCtoAntiga('');
-      selectLocalidade('');
+      setCtoAntiga('');
+      setLocalidade('');
+      setObservacao('');
 
     } catch (error) {
       console.error('Erro na requisição:', error);
-      //alert('Ocorreu um erro ao enviar os dados. Tente novamente.');
     }
   };
 
@@ -102,42 +100,96 @@ const Formulario = ({ onFormSubmit }) => {
     <div className="form-container">
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
-          <InputTextApp label="CÓDIGO" onSelectChange={selectCodigo} valor={codigo} obrigatorio={true} />
-          <SelectApp label="OLT" uri={`${apiUrl}/olt`} onSelectChange={selectOlt} valor={olt} />
-          {olt && <SelectApp label="CTO" uri={`${apiUrl}/olt/${olt}/cto`} onSelectChange={selectCto} valor={cto} />}
-          {cto && <SelectApp label="PORTA" uri={`${apiUrl}/olt/cto/${cto}/portas`} onSelectChange={selectPorta} valor={porta} />}
-          <SelectApp label="TÉCNICO" uri={`${apiUrl}/tecnico/equipes`} onSelectChange={selectTecnico} valor={tecnico} />
-
-          <div className="form-group">
-            <label>Data:</label>
-            <input
-              id="date"
-              name="date"
-              type="date"
-              value={dataregistro}
-              onChange={(e) => setData(e.target.value)}
-              required
+          <div>
+            <FloatingLabelInput
+              valor={codigo}
+              obrigatorio
+              labelProp={"Codigo"}
+              placeholderProp={""}
+              aoAlterado={(evento) => setCodigo(evento.target.value)}
             />
           </div>
-          <div className="form-group">
-            <label>Procedimento:</label>
-            <select
-              value={procedimento}
-              onChange={(e) => setProcedimento(e.target.value)}
-              required
-            >
-              <option value="">Selecione o procedimento</option>
-              <option value="INSTALACAO">INSTALAÇÃO</option>
-              <option value="MUDANCA_ENDERECO">MUDANCA DE ENDEREÇO</option>
-              <option value="REPARO">REPARO</option>
-              <option value="TROCA_EQUIPAMENTO">TROCA DE EQUIPAMENTO</option>
-              <option value="CANCELAMENTO">CANCELAMENTO</option>
-              <option value="REATIVACAO">REATIVAÇÃO</option>
-              <option value="MIGRACAO">MIGRAÇÃO</option>
-            </select>
+          <div>
+            <FieldAutoComplet 
+              uri={`${apiUrl}/olt`} 
+              label={"OLT"} 
+              aoAlterado={setOlt}
+              onInputValueChange={setOltInput}
+              valor={olt}
+              inputValue={oltInput}
+            />
           </div>
-          <InputTextApp label="CTO antiga" onSelectChange={selectCtoAntiga} valor={ctoAntiga} obrigatorio={false} />
-          <InputTextApp label="Localidade" onSelectChange={selectLocalidade} valor={localidade} obrigatorio={true} />
+          <div>
+            {!olt && <FieldAutoComplet desabilitar label="CTO" />}
+            {olt && <FieldAutoComplet 
+              uri={`${apiUrl}/olt/${olt.id}/cto`} 
+              label="CTO" 
+              aoAlterado={setCto}
+              onInputValueChange={setCtoInput}
+              valor={cto}
+              inputValue={ctoInput} 
+            />}
+          </div>
+          <div>
+            {!cto && <FieldAutoComplet desabilitar label="PORTA" />}
+            {cto && <FieldAutoComplet 
+              uri={`${apiUrl}/olt/cto/${cto.id}/portas`} 
+              label="PORTA" porta 
+              aoAlterado={setPorta}
+              onInputValueChange={setPortaInput}
+              valor={porta}
+              inputValue={portaInput}
+              />}
+          </div>
+          <div>
+            <FieldAutoComplet 
+              uri={`${apiUrl}/tecnico/equipes`} 
+              obrigatorio 
+              label={"Técnicos"} 
+              aoAlterado={setTecnico}
+              onInputValueChange={setTecnicoInput}
+              valor={tecnico}
+              inputValue={tecnicoInput}
+            />
+          </div>
+          <div className='controll-form'>
+            <FieldAutoComplet 
+              dadosProcedimento={procedimentos} 
+              obrigatorio label={"Procedimento"} 
+              aoAlterado={setProcedimento}
+              onInputValueChange={setInputProcedimento}
+              valor={procedimento}
+              inputValue={inputProcedimento} 
+            />
+          </div>
+          <div className='controll-form'>
+            <FloatingLabelInput
+              valor={ctoAntiga}
+              labelProp={"CTO antiga"}
+              placeholderProp={""}
+              aoAlterado={(evento) => setCtoAntiga(evento.target.value)}
+            />
+          </div>
+          <div className='controll-form'>
+            <FloatingLabelInput
+              valor={localidade}
+              obrigatorio
+              labelProp={"Localidade"}
+              placeholderProp={""}
+              aoAlterado={(evento) => setLocalidade(evento.target.value)}
+            />
+          </div>
+          <div className='controll-form'>
+            <FloatingLabelInput
+              valor={observacao}
+              labelProp={"Observação"}
+              placeholderProp={""}
+              aoAlterado={(evento) => setObservacao(evento.target.value)}
+            />
+          </div>
+          <div className='data-pick'>
+            <BasicDatePicker aoAlterado={(value) => selectData(value)} label={"Selecione a data"} valor={dayjs(dataregistro)} />
+          </div>
         </div>
         <button type="submit" className="submit-button">Cadastrar</button>
       </form>

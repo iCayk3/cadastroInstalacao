@@ -185,6 +185,9 @@ public class RegistroController {
             if (dados.localidade() != null) {
                 registro.get().setLocalidade(dados.localidade());
             }
+            if(dados.observacao() != null){
+                registro.get().setObservacao(dados.observacao());
+            }
         }
         return ResponseEntity.ok().build();
     }

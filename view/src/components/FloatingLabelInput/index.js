@@ -72,7 +72,7 @@ export default function FloatingLabelInput({ labelProp, placeholderProp, aoAlter
       onChange={aoAlterado}
       slots={{ input: InnerInput }}
       slotProps={{ input: { placeholder: placeholderProp, type: 'text', label: labelProp, required: obrigatorio } }}
-      sx={{ '--Input-minHeight': '56px', '--Input-radius': '6px' }}
+      sx={{ '--Input-minHeight': '56px' }}
     />
   );
 }

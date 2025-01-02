@@ -5,6 +5,7 @@
 }   
 
 .dashPizza .itens {
+    position: relative;
     align-items: center;
     border-radius: 10px;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);

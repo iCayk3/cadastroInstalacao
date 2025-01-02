@@ -3,6 +3,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import useFetch from '../../Services/useFetch';
 import Filtros from '../Filtros';
+import styled from 'styled-components';
+
+const DivEstilizada = styled.div`
+  position: relative;
+`
 
 const columns = [
   { field: 'codigo', headerName: 'CODIGO', width: 80 },
@@ -51,7 +56,7 @@ export default function DataTable({filtro}) {
   }
 
   return (
-    <div>
+    <DivEstilizada>
       <Filtros 
         aoAlteradoTecnico={(tecnico) => aoAlteradoTecnico(tecnico)} 
         aoAlteradoData={(data) => aoAlteradoData(data)}
@@ -108,7 +113,7 @@ export default function DataTable({filtro}) {
 
           />}
       </Paper>
-    </div >
+    </DivEstilizada >
 
   );
 }

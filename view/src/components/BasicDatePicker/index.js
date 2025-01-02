@@ -13,7 +13,7 @@ export default function BasicDatePicker({ aoAlterado, label, views, open, valor}
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"pt"}>
       <DemoContainer components={['DatePicker']}>
         <DatePicker
-          sx={{width: "100%", height: "100%"}}
+          sx={{width: "100%", height: "100%", backgroundColor: "white" }}
           value={valor}
           label={label}
           onChange={aoAlterado}

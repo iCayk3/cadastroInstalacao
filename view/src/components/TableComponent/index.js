@@ -47,7 +47,7 @@ const TableComponent = ({dataApiCto, loagdinCto, errorCto, aoSelectData}) => {
                     </tr>
                 </tbody>
             </table>
-            <BasicDatePicker label={"Selecione o ano e mês"} views={['month']} aoAlterado={aoSelectData} open={'month'}/>
+            <BasicDatePicker label={"Selecione o ano e mês"} views={['year','month']} aoAlterado={aoSelectData} open={'month'}/>
         </div>
     );
 };

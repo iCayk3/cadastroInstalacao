@@ -64,8 +64,6 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
       observacao,
     };
 
-    console.log(formData)
-
     try {
       const response = await fetch(`${apiUrl}/registros`, {
         method: 'POST',
@@ -100,7 +98,7 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
     <div className="form-container">
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
-          <div>
+          <div className='controll-form'>
             <FloatingLabelInput
               valor={codigo}
               obrigatorio
@@ -109,7 +107,7 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
               aoAlterado={(evento) => setCodigo(evento.target.value)}
             />
           </div>
-          <div>
+          <div className='controll-form'>
             <FieldAutoComplet 
               uri={`${apiUrl}/olt`} 
               label={"OLT"} 
@@ -119,7 +117,7 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
               inputValue={oltInput}
             />
           </div>
-          <div>
+          <div className='controll-form'>
             {!olt && <FieldAutoComplet desabilitar label="CTO" />}
             {olt && <FieldAutoComplet 
               uri={`${apiUrl}/olt/${olt.id}/cto`} 
@@ -130,7 +128,7 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
               inputValue={ctoInput} 
             />}
           </div>
-          <div>
+          <div className='controll-form'>
             {!cto && <FieldAutoComplet desabilitar label="PORTA" />}
             {cto && <FieldAutoComplet 
               uri={`${apiUrl}/olt/cto/${cto.id}/portas`} 
@@ -141,7 +139,7 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
               inputValue={portaInput}
               />}
           </div>
-          <div>
+          <div className='controll-form'>
             <FieldAutoComplet 
               uri={`${apiUrl}/tecnico/equipes`} 
               obrigatorio 

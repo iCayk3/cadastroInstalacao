@@ -3,6 +3,7 @@ import './App.css';
 import Inicio from "./Paginas/Inicio"
 import Overview from './Paginas/Overview';
 import Menu from './components/Menu';
+import Rodape from './components/Rodape';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path='/' element={<Inicio />}/>
         <Route path='/overview' element={<Overview/>} />
       </Routes>
+      <Rodape />
     </BrowserRouter>
   );
 }

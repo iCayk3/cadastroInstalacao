@@ -23,7 +23,7 @@ export default function FieldAutoComplet({ uri, label, aoAlterado, dadosProcedim
                     getOptionLabel={(option) => option.label || ""}
                     isOptionEqualToValue={(option, value) => option.id === value?.id}
                     disablePortal
-                    sx={{ width: 300 }}
+                    sx={{ backgroundColor: "white" }}
                     renderInput={(params) => <TextField {...params} required={obrigatorio} label={label} />}
                 />
             }
@@ -38,7 +38,7 @@ export default function FieldAutoComplet({ uri, label, aoAlterado, dadosProcedim
                     isOptionEqualToValue={(option, value) => option.id === value?.id}
                     disablePortal
                     options={dadosProcedimento}
-                    sx={{ width: 300 }}
+                    sx={{ backgroundColor: "white"  }}
                     renderInput={(params) => <TextField {...params} required={obrigatorio} label={label} />}
                 />}
             {
@@ -48,7 +48,6 @@ export default function FieldAutoComplet({ uri, label, aoAlterado, dadosProcedim
                     disabled={desabilitar}
                     disablePortal
                     options={[{ data: "data" }]}
-                    sx={{ width: 300 }}
                     renderInput={(params) => <TextField {...params} label={label} />}
                 />}
             {porta && !desabilitar && !dadosProcedimento && error && <p>Erro na solitação</p>}
@@ -63,7 +62,7 @@ export default function FieldAutoComplet({ uri, label, aoAlterado, dadosProcedim
                     isOptionEqualToValue={(option, value) => option.id === value?.id}
                     disablePortal
                     options={data}
-                    sx={{ width: 300 }}
+                    sx={{ backgroundColor: "white"  }}
                     getOptionLabel={(option) => `${option && option.label}: ${option && option.codigo}`}
                     renderInput={(params) => <TextField {...params} required={obrigatorio} label={label} />}
                 />

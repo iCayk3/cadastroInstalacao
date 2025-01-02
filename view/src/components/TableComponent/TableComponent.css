@@ -5,6 +5,7 @@
   background-color: #fff;
   padding: 4px;
   border-radius: 8px;
+  position: relative;
 }
 
 .tablecomponent table {

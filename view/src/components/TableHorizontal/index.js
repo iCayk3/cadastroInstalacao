@@ -103,7 +103,7 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
                         >
                           <option value="">Selecione o procedimento</option>
                           {procedimentos.map((item) => (
-                            <option value={item.id}>{item.id === formData.procedimento ? item.label : item.id}</option> 
+                            <option key={item.id} value={item.id}>{item.id === formData.procedimento ? item.label : item.id}</option> 
                           ))}
 
                         </select>

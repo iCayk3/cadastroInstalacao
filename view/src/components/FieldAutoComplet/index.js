@@ -64,7 +64,7 @@ export default function FieldAutoComplet({ uri, label, aoAlterado, dadosProcedim
                     options={data}
                     sx={{ backgroundColor: "white"  }}
                     getOptionLabel={(option) => `${option && option.label}: ${option && option.codigo}`}
-                    renderInput={(params) => <TextField {...params} required={obrigatorio} label={label} />}
+                    renderInput={(params) => <TextField {...params} required={obrigatorio} label={label}/>}
                 />
             }
         </>

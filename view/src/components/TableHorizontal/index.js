@@ -1,4 +1,3 @@
-import './TableHorizontal.css'
 import { RiFileEditFill } from "react-icons/ri";
 import { useState } from 'react';
 import { AiOutlineClose } from "react-icons/ai";
@@ -6,12 +5,69 @@ import { GiConfirmed } from "react-icons/gi";
 import SelectApp from '../SelectApp';
 import InputTextApp from '../InputTextApp';
 import * as React from 'react';
-import AlertApp from '../AlertApp';
+import styled from 'styled-components';
+import AlertAppAutoHide from "../AlertAppAutoHide";
 
+const DivTableEstilizada = styled.div`
+    margin-top: 30px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    .form-group input, select{
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    table,
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table,
+    th,
+    td,
+    input {
+      border: 1px solid #ddd;
+    }
+
+    th,
+    td,
+    input {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .editar {
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .editar-ed {
+      text-align: center;
+    }
+
+    .editar-ed svg {
+      margin: 0 4px;
+    }
+
+    .tableLine {
+      box-sizing: border-box;
+    }
+  `
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose, procedimentos }) => {
 
-  const apiUrl = process.env.REACT_APP_API_URL;
   const [editRowId, setEditRowId] = useState(null);
   const [formData, setFormData] = useState({});
 
@@ -24,7 +80,7 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveClick = async() => {
+  const handleSaveClick = async () => {
     aoSalvar(editRowId, formData);
     setEditRowId(null);
     setFormData({});
@@ -36,11 +92,11 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
   };
 
   return (
-    <div className="table-container">
+    <DivTableEstilizada>
       <h3>Dados Cadastrados</h3>
       {loading && <p>Carregando dados...</p>}
       {error && <p>Erro ao carregar os dados: {error.message}</p>}
-      {alertMessage && <AlertApp severity={"error"} texto={"Preencha todos os campos que ja estavam preenchidos"} fechar={onclose}/>}
+      {alertMessage && <AlertAppAutoHide color={"danger"} texto={"Preencha todos os campos que ja estavam preenchidos"} onclose={onclose} animationDuration={1000}/>}
       {data && data.length > 0 ? (
         <table>
           <thead>
@@ -68,10 +124,10 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
                       <GiConfirmed onClick={handleSaveClick} style={{ cursor: "pointer" }} />
                     </td>
                     <td>
-                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.codigo} obrigatorio={true} nome="codigo"/>
+                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.codigo} obrigatorio={true} nome="codigo" />
                     </td>
                     <td>
-                      <SelectApp uri={`${apiUrl}/olt`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeOlt.id} nome={"nomeOlt"}/>
+                      <SelectApp uri={`${apiUrl}/olt`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeOlt.id} nome={"nomeOlt"} />
                     </td>
                     <td>
                       {formData.nomeOlt && <SelectApp uri={`${apiUrl}/olt/${formData.nomeOlt}/cto`} onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.nomeCto.id} nome={"nomeCto"} />}
@@ -103,20 +159,20 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
                         >
                           <option value="">Selecione o procedimento</option>
                           {procedimentos.map((item) => (
-                            <option key={item.id} value={item.id}>{item.id === formData.procedimento ? item.label : item.id}</option> 
+                            <option key={item.id} value={item.id}>{item.id === formData.procedimento ? item.label : item.id}</option>
                           ))}
 
                         </select>
                       </div>
                     </td>
                     <td>
-                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.ctoAntiga} nome="ctoAntiga"/>
+                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.ctoAntiga} nome="ctoAntiga" />
                     </td>
                     <td>
                       <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.localidade} obrigatorio nome="localidade" />
                     </td>
                     <td>
-                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.observacao} nome="observacao"/>
+                      <InputTextApp onSelectChange={(valor, nome) => handleInputChange(valor, nome)} valor={formData.observacao} nome="observacao" />
                     </td>
                   </>
                 ) : (
@@ -146,7 +202,7 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
       ) : (
         !loading && <p>Nenhum dado cadastrado.</p>
       )}
-    </div>
+    </DivTableEstilizada>
   );
 };
 

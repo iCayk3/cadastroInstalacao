@@ -1,19 +1,47 @@
 import React from 'react';
-import './TableComponent.css'
 import BasicDatePicker from '../BasicDatePicker';
+import styled from 'styled-components';
+
+const DivTableComponent = styled.div`
+        display: block;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        padding: 4px;
+        border-radius: 8px;
+        position: relative;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-sizing: border-box;
+            margin-bottom: 128px;
+        }
+        th, td {
+            border-radius: 8px;
+            border: 1px solid #dbe9ff;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #7192ff;
+        }
+        td {
+            text-align: center;
+        }
+    `
 
 const TableComponent = ({dataApiCto, loagdinCto, errorCto, aoSelectData}) => {
 
     if (loagdinCto) return <p>Carregando...</p>;
     if (errorCto) return <p>Erro ao carregar os dados: {errorCto}</p>;
 
-    // Verifica se `dataApiCto` existe e é um objeto
     if (!dataApiCto || typeof dataApiCto !== 'object') {
         return <p>Nenhum dado disponível.</p>;
     }
 
     return (
-        <div className='tablecomponent'>
+        <DivTableComponent>
             <h1>Total mensal</h1>
             <table>
                 <tbody>
@@ -48,7 +76,7 @@ const TableComponent = ({dataApiCto, loagdinCto, errorCto, aoSelectData}) => {
                 </tbody>
             </table>
             <BasicDatePicker label={"Selecione o ano e mês"} views={['year','month']} aoAlterado={aoSelectData} open={'month'}/>
-        </div>
+        </DivTableComponent>
     );
 };
 

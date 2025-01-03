@@ -1,20 +1,33 @@
 import * as React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import useFetch from '../../Services/useFetch';
-import styles from './DashPizza.module.css'
+import styled from 'styled-components';
+
+const DivDashEstilizada = styled.div`
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    .itens {
+        position: relative;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+        margin: 8px;
+        height: 22.5rem;
+    }
+  `
+  const apiUrl = process.env.REACT_APP_API_URL;
 
 export default function DashPizza({ filtro }) {
-
-  const apiUrl = process.env.REACT_APP_API_URL;
 
   const { data, loading, error } = useFetch(`${apiUrl}/registros/servicos/tecnicos/mensal/resumo?filtro=${filtro}`)
 
   return (
-    <div className={styles.dashPizza}>
+    <DivDashEstilizada>
       {error && <p>Erro ao solicitar: {error}</p>}
       {loading && <p>Carregando...</p>}
       {data && data.map((dados, index) => (
-        <div key={index} className={styles.itens}>
+        <div key={index} className="itens">
           <h4>{dados.nome}</h4>
           <PieChart
             series={[
@@ -26,6 +39,6 @@ export default function DashPizza({ filtro }) {
             ]}
             height={280} /></div>
       ))}
-    </div>
+    </DivDashEstilizada>
   );
 }

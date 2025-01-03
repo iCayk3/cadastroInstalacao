@@ -28,16 +28,10 @@ export default function DataTable({filtro}) {
   const apiUrl = process.env.REACT_APP_API_URL;
   const [dataFiltro, setDataFiltro] = React.useState('');
   const [tecnico, setTecnico] = React.useState('');
+  const [tecnicoLabel, setTecnicoLabel] = React.useState('');
   const [cliente, setCliente] = React.useState('')
   const { data, loading, error } = useFetch(`${apiUrl}/registros?filtro=${filtro}`);
 
-  const aoAlteradoTecnico = (tecnico) => {
-    if (tecnico === null) {
-      setTecnico(data)
-    } else {
-      setTecnico(tecnico)
-    }
-  }
 
   const aoAlteradoData = (dataFiltro) => {
     if (dataFiltro === null) {
@@ -58,7 +52,10 @@ export default function DataTable({filtro}) {
   return (
     <DivEstilizada>
       <Filtros 
-        aoAlteradoTecnico={(tecnico) => aoAlteradoTecnico(tecnico)} 
+        aoAlteradoTecnico={setTecnico}
+        valor={tecnico}
+        valorInput={tecnicoLabel}
+        aoAlteradoTecnicoLabel={setTecnicoLabel} 
         aoAlteradoData={(data) => aoAlteradoData(data)}
         aoAlteradoCliente={(cliente) => aoAlteradoCliente(cliente)}
         />
@@ -68,7 +65,7 @@ export default function DataTable({filtro}) {
         {error && <p>Erro na requisicao: {error}</p>}
         {!cliente && !dataFiltro && tecnico && <DataGrid
             key={data.id}
-            rows={data.filter((item) => item.nomeEquipeTecnica === tecnico)}
+            rows={data.filter((item) => item.nomeEquipeTecnica === tecnico.label)}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 15]}

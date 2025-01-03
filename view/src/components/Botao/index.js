@@ -1,11 +1,21 @@
+import styled from 'styled-components'
 import './Botao.css'
 
 const Botao = (props) => {
+
+    const DivButtEstilizda = styled.div`
+        .button {
+            width: 50%;
+            font-size: 20px;
+            border-radius: 5px;
+            background-color: blue;
+        }
+    `
+
     return (
-        <div className='botao'>
+        <DivButtEstilizda>
             <button>{props.nome}</button>
-        </div>
-        
+        </DivButtEstilizda>
     )
 }
 

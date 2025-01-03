@@ -1,14 +1,64 @@
-
-import './Formulario.css'
 import React, { useEffect, useState } from 'react';
 import FieldAutoComplet from '../FieldAutoComplet';
 import BasicDatePicker from '../BasicDatePicker';
 import dayjs from 'dayjs';
 import FloatingLabelInput from '../FloatingLabelInput';
+import styled from 'styled-components';
+import AlertAppAutoHide from '../AlertAppAutoHide';
 
-const Formulario = ({ onFormSubmit, procedimentos }) => {
+const DivFormEstilizada = styled.div`
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 
-  const apiUrl = process.env.REACT_APP_API_URL;
+    .form-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 16px; 
+    box-sizing: border-box;
+  }
+   
+  
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #1E3CE1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px; 
+  }
+  
+  .submit-button:hover {
+    background-color: #E14F01;
+  }
+  
+  .data-pick {
+   
+    height: 56px;
+  }
+  .data-pick input {
+    font-size: 16 px;
+  }
+
+  .data-pick {
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .controll-form {
+    margin-top: 8px;
+  }
+  `
+const apiUrl = process.env.REACT_APP_API_URL;
+
+const Formulario = ({ onFormSubmit, procedimentos, onclose }) => {
+
+
 
   // Estados para armazenar os valores dos campos
   const [codigo, setCodigo] = useState('');
@@ -26,6 +76,8 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
   const [localidade, setLocalidade] = useState('');
   const [observacao, setObservacao] = useState('');
   const [dataregistro, setData] = useState('');
+  const [registroOk, setRegistroOk] = useState(false)
+  const [registroBad, setRegistroBad] = useState(false)
 
   const today = new Date();
 
@@ -88,14 +140,20 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
       setCtoAntiga('');
       setLocalidade('');
       setObservacao('');
-
+      setRegistroOk(true)
     } catch (error) {
+      setRegistroBad(true)
       console.error('Erro na requisição:', error);
     }
   };
 
+  const fecharAlerta = () => {
+    setRegistroOk(false)
+    setRegistroBad(false)
+  }
+
   return (
-    <div className="form-container">
+    <DivFormEstilizada>
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
           <div className='controll-form'>
@@ -108,9 +166,9 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
             />
           </div>
           <div className='controll-form'>
-            <FieldAutoComplet 
-              uri={`${apiUrl}/olt`} 
-              label={"OLT"} 
+            <FieldAutoComplet
+              uri={`${apiUrl}/olt`}
+              label={"OLT"}
               aoAlterado={setOlt}
               onInputValueChange={setOltInput}
               valor={olt}
@@ -119,31 +177,31 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
           </div>
           <div className='controll-form'>
             {!olt && <FieldAutoComplet desabilitar label="CTO" />}
-            {olt && <FieldAutoComplet 
-              uri={`${apiUrl}/olt/${olt.id}/cto`} 
-              label="CTO" 
+            {olt && <FieldAutoComplet
+              uri={`${apiUrl}/olt/${olt.id}/cto`}
+              label="CTO"
               aoAlterado={setCto}
               onInputValueChange={setCtoInput}
               valor={cto}
-              inputValue={ctoInput} 
+              inputValue={ctoInput}
             />}
           </div>
           <div className='controll-form'>
             {!cto && <FieldAutoComplet desabilitar label="PORTA" />}
-            {cto && <FieldAutoComplet 
-              uri={`${apiUrl}/olt/cto/${cto.id}/portas`} 
-              label="PORTA" porta 
+            {cto && <FieldAutoComplet
+              uri={`${apiUrl}/olt/cto/${cto.id}/portas`}
+              label="PORTA" porta
               aoAlterado={setPorta}
               onInputValueChange={setPortaInput}
               valor={porta}
               inputValue={portaInput}
-              />}
+            />}
           </div>
           <div className='controll-form'>
-            <FieldAutoComplet 
-              uri={`${apiUrl}/tecnico/equipes`} 
-              obrigatorio 
-              label={"Técnicos"} 
+            <FieldAutoComplet
+              uri={`${apiUrl}/tecnico/equipes`}
+              obrigatorio
+              label={"Técnicos"}
               aoAlterado={setTecnico}
               onInputValueChange={setTecnicoInput}
               valor={tecnico}
@@ -151,13 +209,13 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
             />
           </div>
           <div className='controll-form'>
-            <FieldAutoComplet 
-              dadosProcedimento={procedimentos} 
-              obrigatorio label={"Procedimento"} 
+            <FieldAutoComplet
+              dadosProcedimento={procedimentos}
+              obrigatorio label={"Procedimento"}
               aoAlterado={setProcedimento}
               onInputValueChange={setInputProcedimento}
               valor={procedimento}
-              inputValue={inputProcedimento} 
+              inputValue={inputProcedimento}
             />
           </div>
           <div className='controll-form'>
@@ -190,8 +248,10 @@ const Formulario = ({ onFormSubmit, procedimentos }) => {
           </div>
         </div>
         <button type="submit" className="submit-button">Cadastrar</button>
+        {registroOk && <AlertAppAutoHide color={"success"} texto={"Registro realizado com sucesso"} onclose={() => fecharAlerta()} animationDuration={200} />}
+        {registroBad && <AlertAppAutoHide color={"danger"} texto={"Algo deu errado!"} onclose={() => fecharAlerta()} animationDuration={200} />}
       </form>
-    </div>
+    </DivFormEstilizada>
   );
 }
 

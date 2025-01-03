@@ -93,7 +93,7 @@ export default function DataTable({filtro}) {
           />}
           {tecnico && dataFiltro &&  <DataGrid
             key={data.id}
-            rows={data.filter((item) => {return item.data === dataFiltro && item.nomeEquipeTecnica === tecnico})}
+            rows={data.filter((item) => {return item.data === dataFiltro && item.nomeEquipeTecnica === tecnico.label})}
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[10, 15]}

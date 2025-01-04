@@ -15,6 +15,34 @@ const DivDashEstilizada = styled.div`
         margin: 8px;
         height: 22.5rem;
     }
+    @media only screen and (max-width: 1438px) {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+    }
+    @media only screen and (max-width: 998px) {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+    }
+    @media only screen and (max-width: 768px) {
+
+      .itens rect {
+          display: none;
+      }
+
+      .itens tspan{
+        display: none;      
+      }
+    }
+    @media only screen and (max-width: 600px) {
+      .itens rect {
+          display: none;
+      }
+
+      .itens tspan{
+        display: none;      
+      }
+    }
+
   `
   const apiUrl = process.env.REACT_APP_API_URL;
 

@@ -53,7 +53,40 @@ const DivFormEstilizada = styled.div`
   .controll-form {
     margin-top: 8px;
   }
-  `
+  @media only screen and (max-width: 1300px) {
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 16px; 
+      box-sizing: border-box;
+    }
+  }
+  @media only screen and (max-width: 998px) {
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 16px; 
+      box-sizing: border-box;
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2 , 1fr); 
+      gap: 16px; 
+      box-sizing: border-box;
+    }
+  }
+  @media only screen and (max-width: 600px) {
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr); 
+      gap: 16px; 
+      box-sizing: border-box;
+    }
+  }
+  
+`
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const Formulario = ({ onFormSubmit, procedimentos, onclose }) => {

@@ -22,6 +22,40 @@ const DivFiltroEstilizada = styled.div`
         .gridItem:nth-child(3){
             margin-bottom: 0.5rem;
         }
+
+        @media only screen and (max-width: 1438px) {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            .gridItem:nth-child(1){
+                grid-column: span 2;
+
+            }
+        }
+        @media only screen and (max-width: 998px) {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            .gridItem:nth-child(1){
+                grid-column: span 2;
+
+            }
+        }
+        @media only screen and (max-width: 768px) {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            .gridItem:nth-child(1){
+                grid-column: span 1;
+
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            .gridItem:nth-child(1){
+                grid-column: span 1;
+
+            }
+        }
+
 `
 
 export default function Filtros({ aoAlteradoTecnico, aoAlteradoData, aoAlteradoCliente, aoAlteradoTecnicoLabel, valor, valorInput }) {

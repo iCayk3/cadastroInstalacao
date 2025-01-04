@@ -19,13 +19,108 @@ const MainEstilizado = styled.main`
       border: 1px solid #ccc;
       border-radius: 8px;
       box-sizing: border-box;
-    } 
+    }
+    
+  @media only screen and (max-width: 1300px) {
+    table td:nth-child(9),
+    table th:nth-child(9) {
+    display: none;
+    }
+    table td:nth-child(11),
+    table th:nth-child(11) {
+    display: none;
+    }
+  }
+  @media only screen and (max-width: 1090px) {
+    table td:nth-child(1),
+    table th:nth-child(1) {
+    display: none;
+    }
+    table td:nth-child(9),
+    table th:nth-child(9) {
+    display: none;
+    }
+    table td:nth-child(11),
+    table th:nth-child(11) {
+    display: none;
+    }
+    table td:nth-child(10),
+    table th:nth-child(10) {
+    display: none;
+    }
+  }
+  @media only screen and (max-width: 984px) {
+    table td:nth-child(1),
+    table th:nth-child(1) {
+    display: none;
+    }
+    table td:nth-child(9),
+    table th:nth-child(9) {
+    display: none;
+    }
+    table td:nth-child(11),
+    table th:nth-child(11) {
+    display: none;
+    }
+    table td:nth-child(10),
+    table th:nth-child(10) {
+    display: none;
+    }
+    table td:nth-child(3),
+    table th:nth-child(3) {
+    display: none;
+    }
+    table td:nth-child(4),
+    table th:nth-child(4) {
+    display: none;
+    }
+    table td:nth-child(5),
+    table th:nth-child(5) {
+    display: none;
+    }
+  }
+  
+  @media only screen and (max-width: 600px) {
+    table td:nth-child(1),
+    table th:nth-child(1) {
+    display: none;
+    }
+    table td:nth-child(9),
+    table th:nth-child(9) {
+    display: none;
+    }
+    table td:nth-child(11),
+    table th:nth-child(11) {
+    display: none;
+    }
+    table td:nth-child(10),
+    table th:nth-child(10) {
+    display: none;
+    }
+    table td:nth-child(3),
+    table th:nth-child(3) {
+    display: none;
+    }
+    table td:nth-child(4),
+    table th:nth-child(4) {
+    display: none;
+    }
+    table td:nth-child(5),
+    table th:nth-child(5) {
+    display: none;
+    }
+    table td:nth-child(7),
+    table th:nth-child(7) {
+    display: none;
+    }
+  }
+
   `
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const   Main = () => {
-  
+const Main = () => {
+
   const procedimentos = [{
     id: "INSTALACAO",
     label: "INSTALAÇÃO"
@@ -96,7 +191,7 @@ const   Main = () => {
 
   return (
     <MainEstilizado>
-      <section className='grid-item'><Formulario onFormSubmit={handleFormSubmit} procedimentos={procedimentos} onclose={() => exibiralerta(false)}/></section>
+      <section className='grid-item'><Formulario onFormSubmit={handleFormSubmit} procedimentos={procedimentos} onclose={() => exibiralerta(false)} /></section>
       <section className='grid-item'><TableHorizontal
         procedimentos={procedimentos}
         data={data}

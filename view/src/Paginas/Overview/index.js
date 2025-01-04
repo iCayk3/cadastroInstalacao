@@ -25,12 +25,58 @@ const MainOverviewEstilizada = styled.main`
             border: 1px solid #ccc;
             border-radius: 8px;
         }
+
+        @media only screen and (max-width: 1438px) {
+            display: block;
+            section{
+                margin: 12px 0 0 20px;
+            }
+            section:nth-child(3){
+                grid-column: none;
+            }
+            box-sizing: border-box;
+            grid-auto-rows: none
+        }
+        @media only screen and (max-width: 998px) {
+            display: block;
+            section{
+                margin: 12px 0 0 20px;
+            }
+            section:nth-child(3){
+                grid-column: none;
+            }
+            box-sizing: border-box;
+            grid-auto-rows: none
+        }
+        @media only screen and (max-width: 768px) {
+            display: block;
+            section{
+                margin: 12px 0 0 20px;
+            }
+            section:nth-child(3){
+                grid-column: none;
+            }
+            box-sizing: border-box;
+            grid-auto-rows: none
+        }
+        @media only screen and (max-width: 600px) {
+            display: block;
+            section{
+                margin: 12px 0 0 20px;
+            }
+            section:nth-child(3){
+                grid-column: none;
+            }
+            box-sizing: border-box;
+            grid-auto-rows: none
+        }
+
     `
 const apiUrl = process.env.REACT_APP_API_URL;
 const today = new Date();
 
-const Overview = () => {   
-    
+const Overview = () => {
+
     const [dataConsulta, setDataConsulta] = useState(today.toISOString().slice(0, 10))
     const { data, loading, error } = useFetch(`${apiUrl}/registros/servicos/mensais/resumo?filtro=${dataConsulta}`)
 

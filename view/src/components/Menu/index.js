@@ -22,6 +22,22 @@ const HeaderMenuEstilizado = styled.header`
         align-items: center;
         box-sizing: border-box;
     }
+
+    @media only screen and (max-width: 1438px) {
+            
+        }
+        @media only screen and (max-width: 998px) {
+            
+        }
+        @media only screen and (max-width: 768px) {
+            
+        }
+        @media only screen and (max-width: 600px) {
+            display: grid;
+            justify-content: space-between;
+            grid-template-columns: 50% 50%;
+        }
+
 `
 
 export default function Menu() {

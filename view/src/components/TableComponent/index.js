@@ -29,6 +29,22 @@ const DivTableComponent = styled.div`
         td {
             text-align: center;
         }
+
+        @media only screen and (max-width: 1438px) {
+               
+        }
+        @media only screen and (max-width: 998px) {
+            
+        }
+        @media only screen and (max-width: 768px) {
+                
+        }
+        @media only screen and (max-width: 600px) {
+            h1 {
+                font-size: 14px;
+            }
+        }
+
     `
 
 const TableComponent = ({dataApiCto, loagdinCto, errorCto, aoSelectData}) => {

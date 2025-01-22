@@ -126,7 +126,28 @@ public class RegistroController {
         if(resumoTroca == null){
             resumoTroca = 0;
         }
-        var resumo = new ResumoServicoMensalDTO(resumoInstalacao, resumoMudanca, resumoReparo, resumoTroca, resumoCancelamento, resumoReativacao, resumoMigracao);
+        var resumoSemInternet = registroRepository.buscarResumoMensal(Procedimento.SEM_INTERNET, data.getMonthValue(), data.getYear());
+        if(resumoSemInternet == null){
+            resumoSemInternet = 0;
+        }
+        var resumoLentidao = registroRepository.buscarResumoMensal(Procedimento.LENTIDAO, data.getMonthValue(), data.getYear());
+        if(resumoLentidao == null){
+            resumoLentidao = 0;
+        }
+        var resumoMudancaComodo = registroRepository.buscarResumoMensal(Procedimento.MUDANCA_COMODO, data.getMonthValue(), data.getYear());
+        if(resumoMudancaComodo == null){
+            resumoMudancaComodo = 0;
+        }
+        var resumoTrocaSenha = registroRepository.buscarResumoMensal(Procedimento.TROCA_SENHA, data.getMonthValue(), data.getYear());
+        if(resumoTrocaSenha == null){
+            resumoTrocaSenha = 0;
+        }
+        var resumoOutros = registroRepository.buscarResumoMensal(Procedimento.OUTROS, data.getMonthValue(), data.getYear());
+        if(resumoOutros == null){
+            resumoOutros = 0;
+        }
+        var resumo = new ResumoServicoMensalDTO(resumoInstalacao, resumoMudanca, resumoTroca,
+                resumoCancelamento, resumoReativacao, resumoMigracao, resumoSemInternet, resumoLentidao, resumoMudancaComodo, resumoTrocaSenha, resumoOutros);
 
         return ResponseEntity.ok(resumo);
     }

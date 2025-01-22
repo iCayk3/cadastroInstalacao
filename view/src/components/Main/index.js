@@ -130,12 +130,24 @@ const Main = () => {
     label: "MUDANÇA DE ENDEREÇO"
   },
   {
-    id: "REPARO",
-    label: "REPARO"
+    id: "SEM_INTERNET",
+    label: "SEM INTERNET"
+  },
+  {
+    id: "LENTIDAO",
+    label: "LENTIDÃO"
+  },
+  {
+    id: "MUDANCA_COMODO",
+    label: "MUDANÇA DE COMODO"
   },
   {
     id: "TROCA_EQUIPAMENTO",
     label: "TROCA DE EQUIPAMENTO"
+  },
+  {
+    id: "TROCA_SENHA",
+    label: "TROCA DE SENHA"
   },
   {
     id: "CANCELAMENTO",
@@ -148,6 +160,10 @@ const Main = () => {
   {
     id: "MIGRACAO",
     label: "MIGRAÇÃO"
+  },
+  {
+    id: "OUTROS",
+    label: "OUTROS"
   }
   ]
 

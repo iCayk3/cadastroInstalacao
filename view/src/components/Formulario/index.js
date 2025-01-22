@@ -114,12 +114,11 @@ const Formulario = ({ onFormSubmit, procedimentos, onclose }) => {
 
   const today = new Date();
 
-  const selectData = (evento, value) => {
+  const selectData = (value) => {
     if (value === null) {
       setData(dataregistro)
     } else {
       try {
-        console.log(value.toISOString().slice(0, 10))
         setData(value.toISOString().slice(0, 10))
       } catch (e) {
         setData(dataregistro)

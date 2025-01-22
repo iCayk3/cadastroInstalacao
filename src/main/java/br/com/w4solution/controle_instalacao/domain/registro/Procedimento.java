@@ -3,6 +3,11 @@ package br.com.w4solution.controle_instalacao.domain.registro;
 public enum Procedimento {
     INSTALACAO("instalacao"),
     MUDANCA_ENDERECO("mudanca de endereco"),
+    SEM_INTERNET("sem internet"),
+    LENTIDAO("lentidão"),
+    MUDANCA_COMODO("mudança de comodo"),
+    TROCA_SENHA("troca de senha"),
+    OUTROS("outros"),
     REPARO("reparo"),
     TROCA_EQUIPAMENTO("troca de equipamento"),
     CANCELAMENTO("cancelamento"),

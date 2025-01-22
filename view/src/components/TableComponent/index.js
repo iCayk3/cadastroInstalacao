@@ -70,8 +70,16 @@ const TableComponent = ({dataApiCto, loagdinCto, errorCto, aoSelectData}) => {
                         <td>{dataApiCto.mudancaEndereco}</td>
                     </tr>
                     <tr>
-                        <th>Reparo</th>
-                        <td>{dataApiCto.reparo}</td>
+                        <th>Sem internet</th>
+                        <td>{dataApiCto.semInternet}</td>
+                    </tr>
+                    <tr>
+                        <th>Lentidão</th>
+                        <td>{dataApiCto.lentidao}</td>
+                    </tr>
+                    <tr>
+                        <th>Mudança de comodo</th>
+                        <td>{dataApiCto.mudancaComodo}</td>
                     </tr>
                     <tr>
                         <th>Troca de Equipamento</th>
@@ -88,6 +96,14 @@ const TableComponent = ({dataApiCto, loagdinCto, errorCto, aoSelectData}) => {
                     <tr>
                         <th>Migração</th>
                         <td>{dataApiCto.migracao}</td>
+                    </tr>
+                    <tr>
+                        <th>Troca de senha</th>
+                        <td>{dataApiCto.trocaSenha}</td>
+                    </tr>
+                    <tr>
+                        <th>Outros</th>
+                        <td>{dataApiCto.outros}</td>
                     </tr>
                 </tbody>
             </table>

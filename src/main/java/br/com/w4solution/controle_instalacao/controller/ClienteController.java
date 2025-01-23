@@ -6,7 +6,10 @@ import br.com.w4solution.controle_instalacao.dto.cliente.ClienteCadastroDTO;
 import br.com.w4solution.controle_instalacao.dto.cliente.ClienteDTO;
 import br.com.w4solution.controle_instalacao.repository.cliente.ClienteRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.PortaRepository;
+import br.com.w4solution.controle_instalacao.services.ClienteService;
+import br.com.w4solution.controle_instalacao.validations.ValidacoesClientesExceptions;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +20,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ClienteController {
 
     @Autowired
-    ClienteRepository repository;
-
-    @Autowired
-    PortaRepository portaRepository;
+    ClienteService service;
 
     @PostMapping
-    ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody ClienteCadastroDTO dados, UriComponentsBuilder uri){
-        var cliente = new Cliente(null, dados.nome(), null,null, null);
-        repository.save(cliente);
+    @Transactional
+    ResponseEntity<ClienteDTO> cadastrarCliente(@RequestBody @Valid ClienteCadastroDTO dados, UriComponentsBuilder uri){
+        var cliente = service.cadastrarCliente(dados);
         var clienteCriado = uri.path("cliente/{id}").buildAndExpand(cliente.getId()).toUri();
         return ResponseEntity.created(clienteCriado).body(new ClienteDTO(cliente));
     }
@@ -33,14 +33,11 @@ public class ClienteController {
     @PutMapping
     @Transactional
     ResponseEntity<ClienteDTO> atualizarCliente(@RequestBody AtualizarClienteDTO dados){
-
-        var cliente = repository.findById(dados.id());
-        var porta = portaRepository.findById(dados.idPorta());
-        if(cliente.isPresent() && porta.isPresent()){
-            cliente.get().atualizarCliente(dados.nome(), porta.get());
-            return ResponseEntity.ok(new ClienteDTO(cliente.get()));
+        try {
+            var cliente = service.atualizarCliente(dados);
+            return ResponseEntity.ok().body(cliente);
+        }catch (ValidacoesClientesExceptions e){
+            return ResponseEntity.badRequest().build();
         }
-
-        return ResponseEntity.notFound().build();
     }
 }

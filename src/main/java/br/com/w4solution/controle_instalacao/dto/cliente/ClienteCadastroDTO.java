@@ -1,4 +1,7 @@
 package br.com.w4solution.controle_instalacao.dto.cliente;
 
-public record ClienteCadastroDTO(String nome) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record ClienteCadastroDTO(@NotBlank String nome, @NotNull Integer codigo) {
 }

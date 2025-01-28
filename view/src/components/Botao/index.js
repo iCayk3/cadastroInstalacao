@@ -1,20 +1,24 @@
 import styled from 'styled-components'
-import './Botao.css'
 
-const Botao = (props) => {
+const Botao = ({nome, tipo}) => {
 
-    const DivButtEstilizda = styled.div`
-        .button {
-            width: 50%;
-            font-size: 20px;
-            border-radius: 5px;
-            background-color: blue;
-        }
+    const DivButtEstilizda = styled.button`
+        
+            width: 100%;
+            padding: 10px;
+            background-color: #1E3CE1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        
     `
 
     return (
-        <DivButtEstilizda>
-            <button>{props.nome}</button>
+        <DivButtEstilizda type={tipo}>
+            {nome}
         </DivButtEstilizda>
     )
 }

@@ -1,4 +1,6 @@
 package br.com.w4solution.controle_instalacao.dto.tecnico;
 
-public record CadastroEquipeDTO(String nomeEquipe) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CadastroEquipeDTO(@NotBlank String nomeEquipe) {
 }

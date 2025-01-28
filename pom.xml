@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.w4solution</groupId>
 	<artifactId>controle-instalacao</artifactId>
-	<version>1.0</version>
+	<version>1.5</version>
 	<name>controle-instalacao</name>
 	<description>Cadastro de serviços diarios realizados</description>
 	<url/>

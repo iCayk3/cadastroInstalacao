@@ -52,6 +52,9 @@ export default function Menu() {
                 <MenuLink to="/overview">
                     Overview
                 </MenuLink>
+                <MenuLink to="/cadastro">
+                    Cadastros
+                </MenuLink>
             </nav>
         </HeaderMenuEstilizado>
     )

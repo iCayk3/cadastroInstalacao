@@ -35,6 +35,11 @@ public class Porta {
         this.cto = cto;
     }
 
+    public Porta(Integer porta, Cto cto){
+        this.porta = porta;
+        this.cto = cto;
+    }
+
     public void atualizaCliente(Cliente cliente){
         this.clientes = cliente;
     }

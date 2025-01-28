@@ -11,6 +11,7 @@ import br.com.w4solution.controle_instalacao.repository.olt.OltRepository;
 import br.com.w4solution.controle_instalacao.repository.olt.PortaRepository;
 import br.com.w4solution.controle_instalacao.repository.registro.RegistroRepository;
 import br.com.w4solution.controle_instalacao.services.ValidacoesRegistro;
+import br.com.w4solution.controle_instalacao.validations.DeletarRegistroExceptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -178,5 +179,20 @@ public class RegistroService {
                 registro.get().setObservacao(dados.observacao());
             }
         }
+    }
+
+    public void deletarRegistro(Long id) {
+        var registro = registroRepository.findById(id);
+        if(registro.isPresent()){
+            registro.get().setCliente(null);
+            registro.get().setOlt(null);
+            registro.get().setCtoRegistro(null);
+            registro.get().setPorta(null);
+            registro.get().setEquipeTecnica(null);
+            registroRepository.deleteById(id);
+        }else {
+            throw new DeletarRegistroExceptions("REGISTRO NAO ENCONTRADO");
+        }
+
     }
 }

@@ -89,7 +89,7 @@ const DivFormEstilizada = styled.div`
 `
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const Formulario = ({ onFormSubmit, procedimentos, onclose }) => {
+const Formulario = ({ onFormSubmit, procedimentos }) => {
 
 
 

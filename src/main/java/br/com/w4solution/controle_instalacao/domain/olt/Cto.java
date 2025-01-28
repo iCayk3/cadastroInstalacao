@@ -19,7 +19,7 @@ public class Cto {
     private Long id;
     @Column(unique = true)
     private String nomeCto;
-    @OneToMany(mappedBy = "cto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cto", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Porta> portas;
     @ManyToOne
     private Olt olt;

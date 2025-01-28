@@ -2,6 +2,7 @@ package br.com.w4solution.controle_instalacao.controller;
 
 import br.com.w4solution.controle_instalacao.dto.registro.*;
 import br.com.w4solution.controle_instalacao.services.registros.RegistroService;
+import br.com.w4solution.controle_instalacao.validations.DeletarRegistroExceptions;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -56,5 +57,16 @@ public class RegistroController {
     public ResponseEntity atualizarRegistro(@RequestBody AtualizarRegistroDTO dados){
         service.atualizarRegistro(dados);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deletarRegistro(@PathVariable Long id){
+        try{
+            service.deletarRegistro(id);
+            return ResponseEntity.ok().build();
+        }catch (DeletarRegistroExceptions e){
+            return ResponseEntity.notFound().build();
+        }
     }
 }

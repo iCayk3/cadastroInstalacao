@@ -63,9 +63,10 @@ const InnerInput = React.forwardRef(function InnerInput(props, ref) {
   );
 });
 
-export default function FloatingLabelInput({ labelProp, placeholderProp, aoAlterado, obrigatorio, valor }) {
+export default function FloatingLabelInput({ labelProp, placeholderProp, aoAlterado, obrigatorio, valor, tipo}) {
   return (
     <Input
+      type={tipo}
       value={valor}
       required={obrigatorio}
       size="sm"

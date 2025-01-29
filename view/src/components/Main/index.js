@@ -169,7 +169,7 @@ const Main = () => {
 
   const [refreshTable, setRefreshTable] = useState(false);
 
-  const { data, loading, error } = useFetch(`${apiUrl}/registros/top5?refresh=${refreshTable}`);
+  const { data, loading, error } = useFetch(`${apiUrl}/registros/top15?refresh=${refreshTable}`);
   const [alertMessage, setAlertMessage] = useState(false);
 
   const salvarEdicao = async (editRowId, formData) => {
@@ -209,6 +209,7 @@ const Main = () => {
     <MainEstilizado>
       <section className='grid-item'><Formulario onFormSubmit={handleFormSubmit} procedimentos={procedimentos} onclose={() => exibiralerta(false)} /></section>
       <section className='grid-item'><TableHorizontal
+        onFormSubmit={handleFormSubmit}
         procedimentos={procedimentos}
         data={data}
         loading={loading}

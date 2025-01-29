@@ -1,4 +1,4 @@
-import { RiFileEditFill } from "react-icons/ri";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import { AiOutlineClose } from "react-icons/ai";
 import { GiConfirmed } from "react-icons/gi";
@@ -7,6 +7,8 @@ import InputTextApp from '../InputTextApp';
 import * as React from 'react';
 import styled from 'styled-components';
 import AlertAppAutoHide from "../AlertAppAutoHide";
+import DialogConfirme from "../DialogConfirme";
+import EditIcon from '@mui/icons-material/Edit';
 
 const DivTableEstilizada = styled.div`
     margin-top: 30px;
@@ -48,6 +50,11 @@ const DivTableEstilizada = styled.div`
     }
 
     .editar {
+      font-size: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .excluir{
       text-align: center;
       cursor: pointer;
     }
@@ -63,10 +70,15 @@ const DivTableEstilizada = styled.div`
     .tableLine {
       box-sizing: border-box;
     }
+    .edit-exclu{
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
   `
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose, procedimentos }) => {
+const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose, procedimentos, onFormSubmit }) => {
 
   const [editRowId, setEditRowId] = useState(null);
   const [formData, setFormData] = useState({});
@@ -74,6 +86,27 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
   const handleEditClick = (row) => {
     setEditRowId(row.id);
     setFormData({ ...row });
+  };
+
+  const handleExcludClick = async (row) => {
+
+    console.log(row.id);
+
+      try {
+          const response = await fetch(`${apiUrl}/registros/${row.id}`, {
+              method: 'DELETE',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          });
+          if (!response.ok) {
+              throw new Error('Erro ao enviar o formulário');
+          }
+          onFormSubmit()
+
+      } catch (error) {
+          console.error('Erro na requisição:', error);
+      }
   };
 
   const handleInputChange = (value, name) => {
@@ -177,11 +210,25 @@ const TableHorizontal = ({ data, loading, error, aoSalvar, alertMessage, onclose
                   </>
                 ) : (
                   <>
-                    <td
-                      onClick={() => handleEditClick(row)}
-                      className="editar"
+                    <td                     
+                      className="edit-exclu"
                     >
-                      <RiFileEditFill />
+                      <DialogConfirme 
+                        aoAcao={() => (handleEditClick(row))} 
+                        botaoEsquerdo={"Cancelar"} 
+                        BotaoDireito={"Editar"} 
+                        icon={<EditIcon color='primary'/>}
+                        textoDialog={"Você está preste a editar o registro, deseja continuar?"}
+                        tituloDialog={"Editar registro?"}
+                      />
+                      <DialogConfirme 
+                        aoAcao={() => (handleExcludClick(row))} 
+                        botaoEsquerdo={"Cancelar"} 
+                        BotaoDireito={"Excluir"} 
+                        icon={<DeleteIcon color='danger'/>}
+                        textoDialog={"Você está preste a excluir o registro, deseja continuar?"}
+                        tituloDialog={"Excluir registro?"}
+                      />
                     </td>
                     <td>{row.codigo}</td>
                     <td>{row.nomeOlt}</td>

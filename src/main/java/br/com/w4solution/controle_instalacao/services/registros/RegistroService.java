@@ -71,8 +71,8 @@ public class RegistroService {
         return variavel;
     }
 
-    public List<RegistroDTO> listarTop5Registros(){
-        return registroRepository.findTop5ByOrderByIdDesc().stream().map(RegistroDTO::new).toList();
+    public List<RegistroDTO> listarTop15Registros(){
+        return registroRepository.findTop15ByOrderByIdDesc().stream().map(RegistroDTO::new).toList();
     }
 
     public ResumoServicoMensalDTO resumoMensal(String filtro){

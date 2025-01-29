@@ -14,7 +14,7 @@ import java.util.List;
 public interface RegistroRepository extends JpaRepository<Registro, Long> {
 
 
-    List<Registro> findTop5ByOrderByIdDesc();
+    List<Registro> findTop15ByOrderByIdDesc();
 
     @Query("SELECT COUNT(r) " +
             "FROM Registro r " +

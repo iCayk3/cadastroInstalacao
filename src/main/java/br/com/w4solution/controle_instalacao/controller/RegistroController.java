@@ -30,9 +30,9 @@ public class RegistroController {
         return ResponseEntity.ok().body(servicoPoeEquipe);
     }
 
-    @GetMapping("/top5")
+    @GetMapping("/top15")
     public ResponseEntity<List<RegistroDTO>> listarTodosRegistros(){
-        var registros = service.listarTop5Registros();
+        var registros = service.listarTop15Registros();
         return ResponseEntity.ok().body(registros);
     }
 
